@@ -3,6 +3,7 @@ import "./App.css";
 
 //create container with activities (initial values)
 const priorities = { 0: "Low", 1: "Normal", 2: "High" }; //enum
+const prioritiesColor = { Low: "badge bg-success", Normal: "badge bg-warning text-dark ", High: "badge bg-danger" };
 let initialContainerState = [
   {
     id: 1,
@@ -59,7 +60,7 @@ function App() {
             className="form-control"
           />
           <div className="col-md-6" style={{ margin: "16px" }}>
-            <label for="inputEmail4">Priority - {priorityDisplay}</label>
+            <label for="inputEmail4">Priority - {priorityDisplay}  </label>
             <input
               type="range"
               class="custom-range"
@@ -105,8 +106,11 @@ function App() {
           >
             <div class="card-body">
               <div className="d-flex justify-content-between">
-                <h5 className="card-title">{act.id} - Title</h5>
-                <h6 className="card-priority">Priority:</h6>
+                <h5 className="card-title">
+                  <span className="badge rounded-pill bg-secondary">
+                    {act.id}</span>  - Title</h5>
+                <span className={prioritiesColor[act.priority]} style={{ padding: '8px', margin: '8px' }}>
+                  Priority: {act.priority}</span>
               </div>
               <p class="card-text">
                 {act.id} - {act.description}
