@@ -3,20 +3,28 @@ import "./App.css";
 
 //create container with activities (initial values)
 const priorities = { 0: "Low", 1: "Normal", 2: "High" }; //enum
-const prioritiesColor = { Low: "badge bg-success", Normal: "badge bg-warning text-dark ", High: "badge bg-danger" };
+const prioritiesBadgeColor = {
+  Low: "badge bg-success",
+  Normal: "badge bg-warning text-dark ",
+  High: "badge bg-danger",
+};
+const prioritiesBorderColor = {
+  Low: "card mb-2 shadow-sm border-success",
+  Normal: "card mb-2 shadow-sm border-warning",
+  High: "card mb-2 shadow-sm border-danger",
+};
+const prioritiesIcon = {
+  Low: "ms-1 fa-regular fa-face-smile-beam",
+  Normal: "ms-1 fa-regular fa-face-meh",
+  High: "ms-1 fa-regular fa-face-frown",
+};
 let initialContainerState = [
   {
     id: 1,
     description: "First Activity",
     priority: priorities[0],
   },
-  {
-    id: 2,
-    description: "Second Activity",
-    priority: priorities[1],
-  },
 ];
-
 //start app here with all the functions and elements to be rendered by react
 function App() {
   //declare activities array and pass initialstate
@@ -35,6 +43,13 @@ function App() {
     setActivities([...activities]);
     //or removing push and settingo a new obj with spread operator -> setActivities([...activities], {...activity})
   }
+  //delete activity from the list
+  function deleteActivity(id) {
+    const filteredActivities = activities.filter(
+      (activity) => activity.id !== id
+    ); //remove id from original list
+    setActivities([...filteredActivities]);
+  }
   //change priority slider handler
   const setPriority = (event) => {
     changePriorityDisplay(priorities[event.target.value]);
@@ -42,28 +57,36 @@ function App() {
   return (
     <>
       <form className="row g-3">
-        <div className="col-md-6">
-          <label for="inputEmail4">Id</label>
+        <div className="col-md-1">
+          <label htmlFor="inputEmail4">Id</label>
           <input
             id="id"
             type="text"
-            placeholder="Inform the activity id"
+            readOnly
+            value={
+              Math.max.apply(
+                Math,
+                activities.map((item) => item.id)
+              ) + 1
+            }
+            disabled={true}
             className="form-control"
+            style={{ maxWidth: "56px" }}
           />
         </div>
         <div className="col-md-6">
-          <label for="inputEmail4">Description</label>
+          <label htmlFor="inputEmail4">Description</label>
           <input
             id="desc"
             type="text"
             placeholder="Describe your activity"
             className="form-control"
           />
-          <div className="col-md-6" style={{ margin: "16px" }}>
-            <label for="inputEmail4">Priority - {priorityDisplay}  </label>
+          <div className="col-ms-1" style={{ margin: "16px" }}>
+            <label htmlFor="inputEmail4">Priority - {priorityDisplay} </label>
             <input
               type="range"
-              class="custom-range"
+              className="custom-range ms-4"
               min="0"
               max="2"
               step="1"
@@ -101,20 +124,50 @@ function App() {
       <div className="mt-3">
         {activities.map((act) => (
           <div
-            class="card shadow-sm"
-            style={{ width: "18rem", margin: "16px" }}
+            className={prioritiesBorderColor[act.priority]}
+            style={{ width: "18rem", margin: "16px", border: "solid 2px" }}
           >
-            <div class="card-body">
+            <div className="card-body">
               <div className="d-flex justify-content-between">
                 <h5 className="card-title">
-                  <span className="badge rounded-pill bg-secondary">
-                    {act.id}</span>  - Title</h5>
-                <span className={prioritiesColor[act.priority]} style={{ padding: '8px', margin: '8px' }}>
-                  Priority: {act.priority}</span>
+                  <span
+                    className="badge rounded-pill bg-secondary"
+                    style={{ padding: "5px 8px" }}
+                  >
+                    {act.id}
+                  </span>{" "}
+                  - Title
+                </h5>
+                <span
+                  className={prioritiesBadgeColor[act.priority]}
+                  style={{ padding: "8px", margin: "8px" }}
+                >
+                  Priority: {act.priority}{" "}
+                  <i
+                    className={prioritiesIcon[act.priority]}
+                    id="prior-icons"
+                    style={{ fontSize: "16px" }}
+                  ></i>
+                </span>
               </div>
-              <p class="card-text">
+              <p className="card-text">
                 {act.id} - {act.description}
               </p>
+              <hr />
+              <div
+                className="d-flex justify-content-end"
+                style={{ margin: "8px" }}
+              >
+                <button className="btn btn-sm btn-outline-primary me-2">
+                  <i className="me-1 fa-solid fa-pen"></i> Edit
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-danger me-2"
+                  onClick={() => deleteActivity(act.id)}
+                >
+                  <i className="me-1 fa-solid fa-trash"></i> Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}
