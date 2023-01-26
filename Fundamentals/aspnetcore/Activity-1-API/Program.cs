@@ -31,6 +31,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+//allowing axios to access my api trough CORS
+app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
 app.MapControllers();
 
 app.Run();
