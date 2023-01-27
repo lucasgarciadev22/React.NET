@@ -5,25 +5,27 @@ import ActivityForm from "./components/ActivityForm";
 import ActivityListGen from "./components/ActivityListGen";
 
 function App() {
-  const [index] = useState(0);
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({ id: 0 });
 
   const fetchActivities = async () => {
-    const response = await api.get("activity");
+    const response = await api.get("Act1");
     return response.data;
   };
 
   useEffect(() => {
     const getActivities = async () => {
       const fetchedActivities = await fetchActivities();
-      if (fetchedActivities) setActivities(fetchActivities); //if api get request is valid set activities with loaded values.
+      if (fetchedActivities) setActivities(fetchedActivities); //if api get request is valid set activities with loaded values.
     };
     getActivities();//use function in useEffect
+    console.log({activities});
   }, []);
 
-  function addActivity(act) {
-    setActivities([...activities, { ...act, id: index }]);
+  const addActivity = async (act) =>{
+    const response = await api.post("Act1", act);
+
+    setActivities([...activities,response.data]);//pass response data as body to post method
   }
 
   function cancelActivity() {
