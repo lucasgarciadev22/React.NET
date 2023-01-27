@@ -5,41 +5,44 @@ import ActivityForm from "./components/ActivityForm";
 import ActivityListGen from "./components/ActivityListGen";
 
 function App() {
-  const [index] = useState(0);
+
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({ id: 0 });
 
   const fetchActivities = async () => {
-    const response = await api.get("activity");
+    const response = await api.get("Act1");
     return response.data;
   };
 
   useEffect(() => {
     const getActivities = async () => {
       const fetchedActivities = await fetchActivities();
-      if (fetchedActivities) setActivities(fetchActivities); //if api get request is valid set activities with loaded values.
+      if (fetchedActivities) setActivities(fetchedActivities); //if api get request is valid set activities with loaded values.
     };
     getActivities();//use function in useEffect
   }, []);
 
-  function addActivity(act) {
-    setActivities([...activities, { ...act, id: index }]);
+  const addActivity = async (act) => {
+    const response = await api.post("Act1",act);//pass the object to api post request
+    setActivities([...activities, response.data]);//pass the new object from the response to the activities array
   }
 
   function cancelActivity() {
     setActivity({ id: 0 });
   }
 
-  function updateActivity(ativ) {
+  const updateActivity = async (id,act) => {
+    const response = await api.put(`Act1/${id}`,act);
     setActivities(
-      activities.map((item) => (item.id === ativ.id ? ativ : item))
+      activities.map((item) => (item.id === id ? response.data : item))
     );
     setActivity({ id: 0 });
   }
 
-  function deleteActivity(id) {
-    const filteredActs = activities.filter((atividade) => atividade.id !== id);
-    setActivities([...filteredActs]);
+  const deleteActivity = async (id) => {
+    if (await api.delete(`Act1/${id}`))
+    {  const filteredActs = activities.filter((atividade) => atividade.id !== id);
+      setActivities([...filteredActs]);}
   }
 
   function editActivity(id) {
