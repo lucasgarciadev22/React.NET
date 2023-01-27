@@ -5,6 +5,7 @@ import ActivityForm from "./components/ActivityForm";
 import ActivityListGen from "./components/ActivityListGen";
 
 function App() {
+
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({ id: 0 });
 
@@ -22,26 +23,26 @@ function App() {
     console.log({activities});
   }, []);
 
-  const addActivity = async (act) =>{
-    const response = await api.post("Act1", act);
-
-    setActivities([...activities,response.data]);//pass response data as body to post method
+  function addActivity(act) {
+    setActivities([...activities, { ...act, id: index }]);
   }
 
   function cancelActivity() {
     setActivity({ id: 0 });
   }
 
-  function updateActivity(ativ) {
+  const updateActivity = async (id,act) => {
+    const response = await api.put(`Act1/${id}`,act);
     setActivities(
-      activities.map((item) => (item.id === ativ.id ? ativ : item))
+      activities.map((item) => (item.id === id ? response.data : item))
     );
     setActivity({ id: 0 });
   }
 
-  function deleteActivity(id) {
-    const filteredActs = activities.filter((atividade) => atividade.id !== id);
-    setActivities([...filteredActs]);
+  const deleteActivity = async (id) => {
+    if (await api.delete(`Act1/${id}`))
+    {  const filteredActs = activities.filter((atividade) => atividade.id !== id);
+      setActivities([...filteredActs]);}
   }
 
   function editActivity(id) {
