@@ -60,7 +60,7 @@ export default function ActivityCard(props) {
           </button>
           <button
             className="btn btn-sm btn-outline-danger"
-            onClick={() => props.handleShowConfirm}
+            onClick={() => props.handleShowConfirm(props.act)}
           >
             <i className="fas fa-trash me-2"></i>
             Delete

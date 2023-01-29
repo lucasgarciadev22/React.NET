@@ -9,7 +9,7 @@ export default function ActivityListGen(props) {
           <ActivityCard
             key={act.id}
             act={act}
-            deleteActivity={props.deleteActivity}
+            handleShowConfirm={props.handleShowConfirm}
             editActivity={props.editActivity}
           />
         ))

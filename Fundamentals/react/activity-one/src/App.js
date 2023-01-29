@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import api from "./api/activity";
 import "./App.css";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from "react-bootstrap";
 import ActivityForm from "./components/ActivityForm";
 import ActivityListGen from "./components/ActivityListGen";
 
@@ -13,8 +20,15 @@ function App() {
 
   const handleCloseForm = () => setShowForm(false);
   const handleShowForm = () => setShowForm(true);
-  const handleCloseConfirm = () => setShowConfirm(false);
-  const handleShowConfirm = () => setShowConfirm(true);
+  const handleCloseConfirm = () => {
+    setActivity({ id: 0 });
+    setShowConfirm(false);
+  };
+  const handleShowConfirm = (activity) => {
+    const selectedAct = activities.filter((act) => act.id === activity.id);
+    setActivity(selectedAct[0]);
+    setShowConfirm(true);
+  };
 
   const fetchActivities = async () => {
     const response = await api.get("Act1");
@@ -27,12 +41,12 @@ function App() {
       if (fetchedActivities) setActivities(fetchedActivities); //if api get request is valid set activities with loaded values.
     };
     getActivities(); //use function in useEffect
-  }, []);
+  }, [activities.length]);
 
   const addActivity = async (act) => {
     const response = await api.post("Act1", act); //pass the object to api post request
     setActivities([...activities, response.data]); //pass the new object from the response to the activities array
-    handleCloseForm(); 
+    handleCloseForm();
   };
 
   function cancelActivity() {
@@ -46,6 +60,7 @@ function App() {
       activities.map((item) => (item.id === act.id ? response.data : item))
     );
     setActivity({ id: 0 });
+
     handleCloseForm();
   };
 
@@ -54,6 +69,7 @@ function App() {
       const filteredActs = activities.filter((act) => act.id !== id);
 
       setActivities([...filteredActs]);
+      handleCloseConfirm();
     }
   };
 
@@ -73,13 +89,13 @@ function App() {
       </div>
       <ActivityListGen
         activities={activities}
-        deleteActivity={deleteActivity}
+        handleShowConfirm={handleShowConfirm}
         editActivity={editActivity}
       />
 
       <Modal show={showForm} onHide={handleCloseForm}>
         <Modal.Header closeButton>
-          <Modal.Title style={{fontSize:'24px'}}>
+          <Modal.Title style={{ fontSize: "24px" }}>
             Activity {activity.id === 0 ? "" : activity.id}
           </Modal.Title>
         </Modal.Header>
@@ -98,26 +114,26 @@ function App() {
       </Modal>
       <Modal size="sm" show={showConfirm} onHide={handleCloseConfirm}>
         <ModalHeader closeButton>
-          <ModalTitle style={{fontSize:'24px'}}>
-            Removing Activity {activity.id} 
+          <ModalTitle style={{ fontSize: "24px" }}>
+            Removing Activity {activity.id === 0 ? "" : activity.id}
           </ModalTitle>
         </ModalHeader>
-        <ModalBody>
-          Are you sure you wanna remove "{activity.title}"?
-        </ModalBody>
+        <ModalBody>Are you sure you wanna remove "{activity.title}"?</ModalBody>
         <ModalFooter>
-        <button className="btn btn-outline-success me-2" 
-                onClick={()=> deleteActivity(activity.id)}>
-                <i class="fa-solid fa-check me-2"></i>
-                Confirm
-              </button>
-              <button
-                className="btn btn-outline-warning"
-                onClick={()=> handleCloseConfirm}
-              >
-                <i class="fa-solid fa-ban me-2"></i>
-                Cancel
-              </button>
+          <button
+            className="btn btn-outline-success me-2"
+            onClick={() => deleteActivity(activity.id)}
+          >
+            <i class="fa-solid fa-check me-2"></i>
+            Confirm
+          </button>
+          <button
+            className="btn btn-outline-warning"
+            onClick={() => handleCloseConfirm()}
+          >
+            <i className="fa-solid fa-ban me-2"></i>
+            Cancel
+          </button>
         </ModalFooter>
       </Modal>
     </>

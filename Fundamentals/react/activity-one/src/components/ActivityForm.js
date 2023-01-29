@@ -121,7 +121,7 @@ export default function ActivityForm(props) {
                 className="btn btn-outline-warning"
                 onClick={handleCancel}
               >
-                <i class="fa-solid fa-ban me-2"></i>
+                <i className="fa-solid fa-ban me-2"></i>
                 Cancel
               </button>
             </>
