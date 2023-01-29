@@ -47,7 +47,7 @@ namespace Activity_1_API.Controllers
         throw new Exception("Unable to add new activity to Database...");
       }
     }
-    [HttpPut]
+    [HttpPut("{id}")]
     public Activity Put(int id, Activity activity)
     {
       if (activity.Id != id) throw new Exception("Activities Ids doesn't match...");
@@ -60,7 +60,7 @@ namespace Activity_1_API.Controllers
       return new Activity(activity.Id, activity.Title, activity.Description, activity.Priority);//if not registered create new activity
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public bool Delete(int id)
     {
       var activityToDelete = _context.Activities.FirstOrDefault(act => act.Id == id);

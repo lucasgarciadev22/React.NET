@@ -49,7 +49,7 @@ export default function ActivityForm(props) {
   const handleCancel = (e) => {
     e.preventDefault();
 
-    props.calcelActivity();
+    props.cancelActivity();
 
     setActivity(initialActivity);
   };
@@ -87,10 +87,10 @@ export default function ActivityForm(props) {
             id="priority"
             className="form-select"
           >
-            <option defaultValue="0">Select...</option>
-            <option value="1">Low</option>
-            <option value="2">Normal</option>
-            <option value="3">High</option>
+            <option defaultValue="Low">Select...</option>
+            <option value="Low">Low</option>
+            <option value="Normal">Normal</option>
+            <option value="High">High</option>
           </select>
         </div>
         <div className="col-md-12">
@@ -114,14 +114,14 @@ export default function ActivityForm(props) {
           ) : (
             <>
               <button className="btn btn-outline-success me-2" type="submit">
-                <i className="fas fa-plus me-2"></i>
+                <i class="fa-solid fa-arrows-rotate me-2"></i>
                 Save
               </button>
               <button
                 className="btn btn-outline-warning"
                 onClick={handleCancel}
               >
-                <i className="fas fa-plus me-2"></i>
+                <i class="fa-solid fa-ban me-2"></i>
                 Cancel
               </button>
             </>

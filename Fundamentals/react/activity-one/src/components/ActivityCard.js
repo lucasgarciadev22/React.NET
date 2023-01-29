@@ -21,7 +21,7 @@ export default function ActivityCard(props) {
       case "High":
         return icon ? "frown" : "danger";
       default:
-        return "Unknowns";
+        return "Unknown";
     }
   }
 
@@ -60,7 +60,7 @@ export default function ActivityCard(props) {
           </button>
           <button
             className="btn btn-sm btn-outline-danger"
-            onClick={() => props.deleteActivity(props.act.id)}
+            onClick={() => props.handleShowConfirm}
           >
             <i className="fas fa-trash me-2"></i>
             Delete
