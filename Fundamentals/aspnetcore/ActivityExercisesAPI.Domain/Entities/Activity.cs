@@ -1,4 +1,4 @@
-namespace Activity_1_API.Models
+namespace Activity_2_API.Models
 {
   public class Activity
     {

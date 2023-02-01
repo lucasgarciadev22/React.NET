@@ -1,12 +1,13 @@
-using Activity_1_API.Context;
-using Activity_1_API.Models;
+
+using Activity_2_API.Models;
+using ActivityExercisesAPI.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Activity_1_API.Controllers
+namespace Activity_2_API.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class Act1Controller : ControllerBase
+  public class Act2Controller : ControllerBase
   {
     private int Index { get; set; }
     // public IEnumerable<Activity> Activities = new List<Activity>(){
@@ -16,7 +17,7 @@ namespace Activity_1_API.Controllers
     // };
     private readonly DataContext _context;
 
-    public Act1Controller(DataContext context)
+    public Act2Controller(DataContext context)
     {
       _context = context;
     }
