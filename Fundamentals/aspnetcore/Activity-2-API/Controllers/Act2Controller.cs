@@ -1,5 +1,5 @@
-using ActivityExercisesAPI.Data.Context;
 using ActivityExercisesAPI.Domain.Entities;
+using ActivityExercisesAPI.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Activity_2_API.Controllers
@@ -8,65 +8,103 @@ namespace Activity_2_API.Controllers
   [Route("api/[controller]")]
   public class Act2Controller : ControllerBase
   {
-    private int Index { get; set; }
-    // public IEnumerable<Activity> Activities = new List<Activity>(){
-    //   new Activity(1,"First Activity","My first activity",Priority.Low),
-    //   new Activity(2,"Second Activity","My second activity",Priority.High),
-    //   new Activity(3,"Third Activity","My third activity",Priority.Normal)
-    // };
-    private readonly DataContext _context;
-
-    public Act2Controller(DataContext context)
+    private readonly IActivityService _activityService;
+    public Act2Controller(IActivityService activityService)
     {
-      _context = context;
+      _activityService = activityService;
     }
 
     [HttpGet]
-    public IEnumerable<Activity> Get()
+    public async Task<IActionResult> Get()
     {
-      return _context.Activities;
+      try
+      {
+        var activities = await _activityService.GetAllActivitiesAsync();
+        if (activities == null) return NoContent();
+
+        return Ok(activities);
+      }
+      catch (System.Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+        $"Error while trying to return Activities. Error: {ex.Message}");
+      }
     }
 
     [HttpGet("{id}")]
-    public Activity GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-      return _context.Activities.FirstOrDefault(act => act.Id == id);
+      try
+      {
+        var activity = await _activityService.GetActivityByIdAsync(id);
+        if (activity == null) return NoContent();
+
+        return Ok(activity);
+      }
+      catch (System.Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+        $"Error while trying to return Activity {id}. Error: {ex.Message}");
+      }
     }
 
     [HttpPost]
-    public IEnumerable<Activity> Post(Activity activity)
+    public async Task<IActionResult> PostAsync(Activity activity)
     {
-      _context.Activities.Add(activity);
+      try
+      {
+        var activityToPost = await _activityService.AddActivity(activity);
+        if (activityToPost == null) return NoContent();
 
-      if (_context.SaveChanges() > 0)//if result >0 return all
-      {
-        return _context.Activities;
+        return Ok(activityToPost);
       }
-      else
+      catch (System.Exception ex)
       {
-        throw new Exception("Unable to add new activity to Database...");
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+        $"Error while trying to add Activity {activity.Id}. Error: {ex.Message}");
       }
     }
     [HttpPut("{id}")]
-    public Activity Put(int id, Activity activity)
+    public async Task<IActionResult> Put(int id, Activity activity)
     {
-      if (activity.Id != id) throw new Exception("Activities Ids doesn't match...");
-
-      _context.Update(activity);
-      if (_context.SaveChanges() > 0)
+      try
       {
-        return _context.Activities.FirstOrDefault(act => act.Id == id);
+        var activityToPut = await _activityService.GetActivityByIdAsync(id);
+        if (activityToPut.Id != id) return NotFound($"No activity with Id:{id} was found");
+
+        activityToPut = await _activityService.UpdateActivity(activity);
+        return Ok(activityToPut);
       }
-      return new Activity(activity.Id, activity.Title, activity.Description, activity.Priority);//if not registered create new activity
+      catch (System.Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+        $"Error while trying to update Activity {id}. Error: {ex.Message}");
+      }
     }
 
     [HttpDelete("{id}")]
-    public bool Delete(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-      var activityToDelete = _context.Activities.FirstOrDefault(act => act.Id == id);
-      if (activityToDelete == null) throw new Exception("Couldn't find activity in Database...");
-      _context.Remove(activityToDelete);
-      return _context.SaveChanges() > 0;//return if its true that changes were done
+      try
+      {
+        var activityToDelete = await _activityService.GetActivityByIdAsync(id);
+        if (activityToDelete == null) return this.StatusCode(StatusCodes.Status409Conflict,
+        "Unable to delete the specified activity");
+
+        if (await _activityService.DeleteActivity(id))
+        {
+          return Ok(new { message = $"Activity {id} successfully removed" });
+        }
+        else
+        {
+          return BadRequest("Could not delete the specified activity");
+        }
+      }
+      catch (System.Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+        $"Error while trying to update Activity {id}. Error: {ex.Message}");
+      }
     }
   }
 }

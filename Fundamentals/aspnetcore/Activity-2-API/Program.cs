@@ -1,5 +1,9 @@
 using System.Text.Json.Serialization;
 using ActivityExercisesAPI.Data.Context;
+using ActivityExercisesAPI.Data.Repositories;
+using ActivityExercisesAPI.Domain.Interfaces.Repositories;
+using ActivityExercisesAPI.Domain.Interfaces.Services;
+using ActivityExercisesAPI.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(
     options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
+
+builder.Services.AddScoped<IActivityRepo, ActivityRepo>();//redirect repo
+builder.Services.AddScoped<IGeneralRepo, GeneralRepo>();//redirect repo
+builder.Services.AddScoped<IActivityService, ActivityService>();//redirect service
 
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>

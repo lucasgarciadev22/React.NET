@@ -1,52 +1,40 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ActivityExercisesAPI.Data.Context;
 using ActivityExercisesAPI.Domain.Entities;
 using ActivityExercisesAPI.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ActivityExercisesAPI.Data.Repositories
 {
-  public class ActivityRepo : IActivityRepo
+  public class ActivityRepo : GeneralRepo, IActivityRepo
   {
-    public void Add<T>(T entity) where T : class
+    private readonly DataContext _context;
+    public ActivityRepo(DataContext context) : base(context)
     {
-      throw new NotImplementedException();
+      _context = context;
     }
 
-    public void Delete<T>(T entity) where T : class
+    public async Task<Activity[]> GetActivitiesAsync()
     {
-      throw new NotImplementedException();
+      IQueryable<Activity> queryActivities = _context.Activities;
+      queryActivities.AsNoTracking().OrderBy(act => act.Id);
+
+      return await queryActivities.ToArrayAsync();
     }
 
-    public void DeleteMany<T>(T[] entity) where T : class
+    public async Task<Activity> GetByIdAsync(int id)
     {
-      throw new NotImplementedException();
+      IQueryable<Activity> queryActivities = _context.Activities;
+      queryActivities.AsNoTracking().OrderBy(act => act.Id).Where(act => act.Id == id);
+
+      return await queryActivities.FirstOrDefaultAsync();
     }
 
-    public Task<Activity[]> GetActivitiesAsync()
+    public async Task<Activity> GetByTitleAsync(string title)
     {
-      throw new NotImplementedException();
-    }
+      IQueryable<Activity> queryActivities = _context.Activities;
+      queryActivities.AsNoTracking().OrderBy(act => act.Title);
 
-    public Task<Activity> GetByIdAsync(int id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<Activity> GetByTitleAsync(string title)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<bool> SaveChangesAsync()
-    {
-      throw new NotImplementedException();
-    }
-
-    public void Update<T>(T entity) where T : class
-    {
-      throw new NotImplementedException();
+      return await queryActivities.FirstOrDefaultAsync(act => act.Title == title);
     }
   }
 }
