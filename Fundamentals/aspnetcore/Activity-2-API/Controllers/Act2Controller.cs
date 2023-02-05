@@ -1,6 +1,5 @@
-
-using Activity_2_API.Models;
 using ActivityExercisesAPI.Data.Context;
+using ActivityExercisesAPI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Activity_2_API.Controllers

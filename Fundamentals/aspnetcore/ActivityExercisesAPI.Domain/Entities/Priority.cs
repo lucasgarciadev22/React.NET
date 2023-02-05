@@ -1,4 +1,4 @@
-namespace Activity_2_API.Models
+namespace ActivityExercisesAPI.Domain.Entities
 {
     public enum Priority
     {

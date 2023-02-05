@@ -1,4 +1,4 @@
-using Activity_2_API.Models;
+using ActivityExercisesAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,3 @@
-
 using System.Text.Json.Serialization;
 using ActivityExercisesAPI.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(
     options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
+
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

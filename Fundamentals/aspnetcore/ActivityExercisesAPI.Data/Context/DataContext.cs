@@ -1,5 +1,5 @@
-using Activity_2_API.Models;
 using ActivityExercisesAPI.Data.Mappings;
+using ActivityExercisesAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActivityExercisesAPI.Data.Context
