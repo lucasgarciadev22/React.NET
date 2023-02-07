@@ -15,7 +15,7 @@ namespace ActivityExercisesAPI.Domain.Services
     {
       if (await _activityRepo.GetByTitleAsync(model.Title) != null)
       {
-        throw new Exception("Another activity with the same title already exists...");
+        throw new Exception("Another activity with the same Title already exists...");
       }
       if (await _activityRepo.GetByIdAsync(model.Id) == null)
       {

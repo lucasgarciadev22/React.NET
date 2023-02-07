@@ -64,6 +64,7 @@ namespace Activity_2_API.Controllers
         $"Error while trying to add Activity {activity.Id}. Error: {ex.Message}");
       }
     }
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Activity activity)
     {
