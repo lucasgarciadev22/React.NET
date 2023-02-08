@@ -33,7 +33,7 @@ namespace ActivityExercisesAPI.Domain.Services
       {
         throw new Exception("You can't change a concluded activity...");
       }
-      if (await _activityRepo.GetByIdAsync(model.Id) == null)
+      if (await _activityRepo.GetByIdAsync(model.Id) != null)
       {
         _activityRepo.Update(model);
         if (await _activityRepo.SaveChangesAsync())
