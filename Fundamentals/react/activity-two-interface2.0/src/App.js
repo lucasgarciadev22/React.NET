@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "./api/activity";
+import api from "./api/Activity";
 import "./App.css";
 import {
   Button,
