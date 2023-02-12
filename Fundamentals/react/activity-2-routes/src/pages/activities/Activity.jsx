@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import api from "./api/Activity";
-import "./App.css";
+import api from "../../api/Activity";
+import ActivityForm from "./ActivityForm";
+import ActivityListGen from "./ActivityListGen";
+import TitlePage from "../../components/TitlePage";
 import {
   Button,
   Modal,
@@ -9,10 +11,9 @@ import {
   ModalHeader,
   ModalTitle,
 } from "react-bootstrap";
-import ActivityForm from "./components/ActivityForm";
-import ActivityListGen from "./components/ActivityListGen";
+import {Link} from "react-router-dom";
 
-function App() {
+export default function Activity() {
   const [activities, setActivities] = useState([]);
   const [activity, setActivity] = useState({ id: 0 });
   const [showForm, setShowForm] = useState(false);
@@ -81,18 +82,18 @@ function App() {
 
   return (
     <>
-      <div className="div d-flex justify-content-between align-items-end mt-2 pb-3 border-bottom border-dark">
-        <h1>Activities</h1>
+      <h2>My Activities</h2>
+      <TitlePage title={`Activity${activity.id !== 0 ? activity.id : ""}`}>
         <Button variant="outline-success" onClick={handleShowForm}>
           <i className="i fas fa-plus"></i>
         </Button>
-      </div>
+      </TitlePage>
+      <div className="div d-flex justify-content-between align-items-end mt-2 pb-3 border-bottom border-dark"></div>
       <ActivityListGen
         activities={activities}
         handleShowConfirm={handleShowConfirm}
         editActivity={editActivity}
       />
-
       <Modal show={showForm} onHide={handleCloseForm}>
         <Modal.Header closeButton>
           <Modal.Title style={{ fontSize: "24px" }}>
@@ -136,8 +137,8 @@ function App() {
           </button>
         </ModalFooter>
       </Modal>
+
+      <Link to="/">Back to Home</Link>
     </>
   );
 }
-
-export default App;
