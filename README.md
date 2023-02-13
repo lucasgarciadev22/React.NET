@@ -1,3 +1,3 @@
 # ReactNET
 My main projects using NET + React.
-My main projects using React, specially focused in .NET implementations
+Projects using React, specially focused in .NET implementations
