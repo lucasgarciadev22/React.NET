@@ -7,6 +7,7 @@ import {
   Link,
 } from "react-router-dom";
 import Activity from "./pages/activities/Activity";
+import Client from './pages/clients/Client';
 
 export default function App() {
   return (
@@ -17,15 +18,6 @@ export default function App() {
       </Routes>
   );
 }
-
-const Client = () => (
-  <div>
-    <h1>Client</h1>
-    <hr />
-    <Link to='/'>Back to Home</Link>
-  </div>
-);
-
 const Home = () => (
   <div>
     <h1>Home</h1>
