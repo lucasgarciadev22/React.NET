@@ -52,14 +52,14 @@ export default function ActivityCard(props) {
         <p className="card-text">{props.act.description}</p>
         <div className="d-flex justify-content-end pt-2 m-0 border-top">
           <button
-            className="btn btn-sm btn-outline-primary me-2"
+            className="btn btn-me btn-outline-primary me-2"
             onClick={() => props.editActivity(props.act.id)}
           >
             <i className="fas fa-pen me-2"></i>
             Edit
           </button>
           <button
-            className="btn btn-sm btn-outline-danger"
+            className="btn btn-me btn-outline-danger"
             onClick={() => props.handleShowConfirm(props.act)}
           >
             <i className="fas fa-trash me-2"></i>

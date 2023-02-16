@@ -10,8 +10,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
+  Form,
+  InputGroup,
 } from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Activity() {
   const [activities, setActivities] = useState([]);
@@ -82,12 +84,19 @@ export default function Activity() {
 
   return (
     <>
-      <h2>My Activities</h2>
       <TitlePage title={`Activity${activity.id !== 0 ? activity.id : ""}`}>
         <Button variant="outline-success" onClick={handleShowForm}>
           <i className="i fas fa-plus"></i>
         </Button>
       </TitlePage>
+      <InputGroup className="mb-3" style={{marginTop: '16px'}}>
+        <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
+        <Form.Control
+          placeholder="Search clients by name..."
+          aria-label="Default"
+          aria-describedby="inputGroup-sizing-default"
+        />
+      </InputGroup>
       <div className="div d-flex justify-content-between align-items-end mt-2 pb-3 border-bottom border-dark"></div>
       <ActivityListGen
         activities={activities}

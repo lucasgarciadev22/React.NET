@@ -8,20 +8,16 @@ import {
 } from "react-router-dom";
 import Activity from "./pages/activities/Activity";
 import Client from './pages/clients/Client';
+import Dashboard from './pages/dashboard/Dashboard';
+import ClientForm from './pages/clients/ClientForm';
 
 export default function App() {
   return (
       <Routes>
-        <Route path="/" exact element={<Home/>} />
-        <Route path="/clients" element={<Client/>} />
-        <Route path="/activities" element={<Activity/>} />
+        <Route path="/" exact element={<Dashboard/>} />
+        <Route path="/activitie/list" element={<Activity/>} />
+        <Route path="/client/list" element={<Client/>} />
+        <Route path="/client/detail" element={<ClientForm/>} />
       </Routes>
   );
 }
-const Home = () => (
-  <div>
-    <h1>Home</h1>
-    <hr />
-    <Link to='/clients'>Back to Client</Link>
-  </div>
-);
