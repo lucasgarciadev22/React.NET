@@ -103,7 +103,7 @@ export default function ClientList() {
                   <div>
                     <button
                       className="btn btn-me btn-outline-primary me-2"
-                      onClick={() => navigate(`client/detail/${client.id}`)}
+                      onClick={() => navigate(`/client/detail/${client.id}`)}
                     >
                       <i className="fas fa-pen me-2"></i>
                       Edit
