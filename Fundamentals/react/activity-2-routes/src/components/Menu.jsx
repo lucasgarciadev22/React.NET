@@ -13,7 +13,7 @@ export default function Menu() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to='/activitie/list'>Activities To-Do List</Nav.Link>
+            <Nav.Link as={NavLink} to='/activity/list'>Activities To-Do List</Nav.Link>
             <Nav.Link as={NavLink} to='/client/list' >Clients Management</Nav.Link>
           </Nav>
           <Nav>

@@ -86,7 +86,8 @@ export default function Activity() {
     <>
       <TitlePage title={`Activity${activity.id !== 0 ? activity.id : ""}`}>
         <Button variant="outline-success" onClick={handleShowForm}>
-          <i className="i fas fa-plus"></i>
+          <i className="i fas fa-plus me-2"></i>
+          New Activity  
         </Button>
       </TitlePage>
       <InputGroup className="mb-3" style={{marginTop: '16px'}}>

@@ -1,6 +1,7 @@
-import {React,useState} from "react";
+import { React, useState } from "react";
 import TitlePage from "../../components/TitlePage";
-import { InputGroup,Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { Button, InputGroup, Form } from "react-bootstrap";
 
 const clients = [
   {
@@ -41,22 +42,39 @@ const clients = [
 ];
 
 export default function ClientList() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleInputChange = (e)=>{
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
-    console.log(searchQuery);
+  };
+
+  const filteredClients = clients.filter((client) => {
+    return Object.values(client)
+      .join(" ") //transform into string, trim by space
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+  });
+
+  const newClient = () => {
+    navigate("/client/detail");
   };
 
   return (
     <>
-      <TitlePage title={"Client List"} />
+      <TitlePage title={"Client List"}>
+        <Button variant="outline-success" onClick={newClient}>
+          <i className="fas fa-plus me-2" />
+          New Client
+        </Button>
+      </TitlePage>
       <hr />
       <InputGroup className="mb-3">
-        <InputGroup.Text id="inputGroup-sizing-default" >
-          Search
-        </InputGroup.Text>
-        <Form.Control placeholder="Search clients by name..." onChange={handleInputChange}
+        <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
+        <Form.Control
+          placeholder="Search clients by name..."
+          onChange={handleInputChange}
           aria-label="Default"
           aria-describedby="inputGroup-sizing-default"
         />
@@ -74,7 +92,7 @@ export default function ClientList() {
             </tr>
           </thead>
           <tbody>
-            {clients.map((client) => (
+            {filteredClients.map((client) => (
               <tr key={client.id}>
                 <td>{client.id}</td>
                 <td>{client.name}</td>
@@ -83,12 +101,15 @@ export default function ClientList() {
                 <td>{client.status}</td>
                 <td>
                   <div>
-                    <button className="btn btn-me btn-outline-primary me-2">
+                    <button
+                      className="btn btn-me btn-outline-primary me-2"
+                      onClick={() => navigate(`client/detail/${client.id}`)}
+                    >
                       <i className="fas fa-pen me-2"></i>
                       Edit
                     </button>
                     <button className="btn btn-me btn-outline-danger me-2">
-                    <i className="fas fa-duotone fa-power-off me-2"></i>
+                      <i className="fas fa-duotone fa-power-off me-2"></i>
                       Deactivate
                     </button>
                   </div>
