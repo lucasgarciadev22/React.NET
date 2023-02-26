@@ -1,9 +1,8 @@
-import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import TitlePage from './../../components/TitlePage';
+import TitlePage from "../../components/TitlePage";
 
-export default function ClientForm() {
+const ClientForm: React.FC = () => {
   let navigate = useNavigate();
   let {id} = useParams();
   return (
@@ -19,3 +18,5 @@ export default function ClientForm() {
     </>
   );
 }
+
+export default ClientForm;

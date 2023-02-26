@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../../api/Activity";
 import ActivityForm from "./ActivityForm";
 import ActivityListGen from "./ActivityListGen";
+import TitlePage from "../../components/TitlePagetjsx";
 import {
   Button,
   Modal,
@@ -13,7 +14,6 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import TitlePage from './../../components/TitlePage';
 
 export default function Activity() {
   const [activities, setActivities] = useState([]);
@@ -27,8 +27,8 @@ export default function Activity() {
     setActivity({ id: 0 });
     setShowConfirm(false);
   };
-  const handleShowConfirm = (activity) => {
-    const selectedAct = activities.filter((act) => act.id === activity.id);
+  const handleShowConfirm = (id) => {
+    const selectedAct = activities.filter((act) => act.id === id);
     setActivity(selectedAct[0]);
     setShowConfirm(true);
   };
