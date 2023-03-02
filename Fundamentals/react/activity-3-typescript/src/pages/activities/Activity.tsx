@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import api from "../../api/Activity";
 import ActivityForm from "./ActivityForm";
 import ActivityListGen from "./ActivityListGen";
-import TitlePage from "../../components/TitlePagetjsx";
 import {
   Button,
   Modal,
@@ -14,28 +13,37 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import TitlePage from "../../components/TitlePage";
+import { IActivity, Priority } from "../../models/IActivity";
 
-export default function Activity() {
-  const [activities, setActivities] = useState([]);
-  const [activity, setActivity] = useState({ id: 0 });
+const initialActivity: IActivity = {
+  id: 0,
+  description: "",
+  priority: Priority.Low,
+  title: "",
+};
+
+const Activity: React.FC = () => {
+  const [activities, setActivities] = useState<IActivity[]>([]);
+  const [activity, setActivity] = useState<IActivity>(initialActivity);
   const [showForm, setShowForm] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleCloseForm = () => setShowForm(false);
   const handleShowForm = () => setShowForm(true);
   const handleCloseConfirm = () => {
-    setActivity({ id: 0 });
+    setActivity(initialActivity);
     setShowConfirm(false);
   };
-  const handleShowConfirm = (id) => {
+  const handleShowConfirm = (id: number) => {
     const selectedAct = activities.filter((act) => act.id === id);
     setActivity(selectedAct[0]);
     setShowConfirm(true);
   };
 
   const fetchActivities = async () => {
-    const response = await api.get("Act2");
-    return response.data;
+    const response: IActivity[] = await api.get("Act2");
+    return response;
   };
 
   useEffect(() => {
@@ -46,28 +54,28 @@ export default function Activity() {
     getActivities(); //use function in useEffect
   }, [activities.length]);
 
-  const addActivity = async (act) => {
+  const addActivity = async (act: IActivity) => {
     const response = await api.post("Act2", act); //pass the object to api post request
     setActivities([...activities, response.data]); //pass the new object from the response to the activities array
     handleCloseForm();
   };
 
   function cancelActivity() {
-    setActivity({ id: 0 });
+    setActivity(initialActivity);
     handleCloseForm();
   }
 
-  const updateActivity = async (act) => {
+  const updateActivity = async (act: IActivity) => {
     const response = await api.put(`Act2/${act.id}`, act);
     setActivities(
       activities.map((item) => (item.id === act.id ? response.data : item))
     );
-    setActivity({ id: 0 });
+    setActivity(initialActivity);
 
     handleCloseForm();
   };
 
-  const deleteActivity = async (id) => {
+  const deleteActivity = async (id: number) => {
     if (await api.delete(`Act2/${id}`)) {
       const filteredActs = activities.filter((act) => act.id !== id);
 
@@ -76,7 +84,7 @@ export default function Activity() {
     }
   };
 
-  function editActivity(id) {
+  function editActivity(id: number) {
     const selectedAct = activities.filter((act) => act.id === id);
     setActivity(selectedAct[0]);
     handleShowForm();
@@ -87,10 +95,10 @@ export default function Activity() {
       <TitlePage title={`Activity${activity.id !== 0 ? activity.id : ""}`}>
         <Button variant="outline-success" onClick={handleShowForm}>
           <i className="i fas fa-plus me-2"></i>
-          New Activity  
+          New Activity
         </Button>
       </TitlePage>
-      <InputGroup className="mb-3" style={{marginTop: '16px'}}>
+      <InputGroup className="mb-3" style={{ marginTop: "16px" }}>
         <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
         <Form.Control
           placeholder="Search clients by name..."
@@ -115,8 +123,7 @@ export default function Activity() {
             addActivity={addActivity}
             cancelActivity={cancelActivity}
             updateActivity={updateActivity}
-            activity={activity}
-            activities={activities}
+            selectedActivity={activity}
           />
         </Modal.Body>
         <Modal.Footer>
@@ -135,7 +142,7 @@ export default function Activity() {
             className="btn btn-outline-success me-2"
             onClick={() => deleteActivity(activity.id)}
           >
-            <i class="fa-solid fa-check me-2"></i>
+            <i className="fa-solid fa-check me-2"></i>
             Confirm
           </button>
           <button
@@ -151,4 +158,6 @@ export default function Activity() {
       <Link to="/">Back to Home</Link>
     </>
   );
-}
+};
+
+export default Activity;

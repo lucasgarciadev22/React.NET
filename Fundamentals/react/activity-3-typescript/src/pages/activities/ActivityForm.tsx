@@ -49,7 +49,7 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
   };
 
   const handleSelectText = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;// separate object name and value from the received object
+    const { name, value } = e.target; // separate object name and value from the received object
     handlePriorityChange(name, value);
   };
 
@@ -90,6 +90,7 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
         <div className="col-md-6">
           <label className="form-label">Title</label>
           <input
+            title="title-form"
             name="title"
             value={activity.title}
             onChange={handleInputText}
@@ -101,6 +102,7 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
         <div className="col-md-6">
           <label className="form-label">Priority</label>
           <select
+            title="priority-form"
             style={{ borderColor: priorityColor }}
             name="priority"
             value={activity.priority}
@@ -117,6 +119,7 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
         <div className="col-md-12">
           <label className="form-label">Description</label>
           <textarea
+            title="description-form"
             name="description"
             value={activity.description}
             onChange={handleTextAreaText}
