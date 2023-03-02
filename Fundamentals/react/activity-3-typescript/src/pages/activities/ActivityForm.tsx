@@ -1,25 +1,21 @@
-import { useState, useEffect } from "react";
-import { Activity } from "../../models/Activity";
+import React, { useState, useEffect } from "react";
+import { IActivity, Priority } from "../../models/IActivity";
+import { IActivityFormProps } from "../../models/IActivityProps";
 
-const initialActivity: Activity = {
+const initialActivity: IActivity = {
   id: 0,
   description: "",
-  priority: "Low",
+  priority: Priority.Low,
   title: "",
 };
 
-interface ActivityFormProps {
-  selectedActivity: Activity;
-  updateActivity: (activity: Activity) => void;
-  addActivity: (activity: Activity) => void;
-}
-
-const ActivityForm: React.FC<ActivityFormProps> = ({
+const ActivityForm: React.FC<IActivityFormProps> = ({
   selectedActivity,
   updateActivity,
   addActivity,
-}: ActivityFormProps) => {
-  const [activity, setActivity] = useState(currentActivity());
+  cancelActivity,
+}: IActivityFormProps) => {
+  const [activity, setActivity] = useState<IActivity>(currentActivity());
   const [priorityColor, setPriorityColor] = useState(handlePriorityColor());
 
   useEffect(() => {
@@ -28,27 +24,41 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     }
   }, [selectedActivity]);
 
-  function handlePriorityColor(param?: string) {
+  function handlePriorityColor(param?: Priority) {
     switch (param) {
-      case "1":
+      case Priority.Low:
         return "green";
-      case "2":
+      case Priority.Medium:
         return "orange";
-      case "3":
+      case Priority.High:
         return "red";
       default:
         return "";
     }
   }
 
-  const inputTextHandler = (e) => {
-    const { name, value } = e.target;
-
-    setPriorityColor(handlePriorityColor(e.target.value)); //pick up the received object value
+  function handlePriorityChange(name: string, value: string) {
+    const priority = Priority[value as keyof typeof Priority]; // convert string value to enum value
+    setPriorityColor(handlePriorityColor(priority)); //pick up the received object value
     setActivity({ ...activity, [name]: value }); //distribute the values  from the object to each name tag html from the form
+  }
+
+  const handleInputText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target; // separate object name and value from the received object
+    handlePriorityChange(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSelectText = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;// separate object name and value from the received object
+    handlePriorityChange(name, value);
+  };
+
+  const handleTextAreaText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    handlePriorityChange(name, value);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selectedActivity.id !== 0) updateActivity(activity);
@@ -57,7 +67,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     setActivity(initialActivity);
   };
 
-  const handleCancel = (e) => {
+  const handleButtonCancel = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     cancelActivity();
@@ -65,7 +75,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     setActivity(initialActivity);
   };
 
-  function currentActivity() {
+  function currentActivity(): IActivity {
     if (selectedActivity.id !== 0) {
       return selectedActivity;
     } else {
@@ -76,13 +86,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   return (
     <>
       <h1>Activity {activity.id !== 0 ? activity.id : ""}</h1>
-      <form className="row g-3" onSubmit={handleSubmit}>
+      <form className="row g-3" onSubmit={handleFormSubmit}>
         <div className="col-md-6">
           <label className="form-label">Title</label>
           <input
             name="title"
             value={activity.title}
-            onChange={inputTextHandler}
+            onChange={handleInputText}
             id="title"
             type="text"
             className="form-control"
@@ -94,7 +104,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             style={{ borderColor: priorityColor }}
             name="priority"
             value={activity.priority}
-            onChange={inputTextHandler}
+            onChange={handleSelectText}
             id="priority"
             className="form-select"
           >
@@ -109,9 +119,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           <textarea
             name="description"
             value={activity.description}
-            onChange={inputTextHandler}
+            onChange={handleTextAreaText}
             id="description"
-            type="text"
             className="form-control"
           />
           <hr />
@@ -125,12 +134,12 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           ) : (
             <>
               <button className="btn btn-outline-success me-2" type="submit">
-                <i class="fa-solid fa-arrows-rotate me-2"></i>
+                <i className="fa-solid fa-arrows-rotate me-2"></i>
                 Save
               </button>
               <button
                 className="btn btn-outline-warning"
-                onClick={handleCancel}
+                onClick={handleButtonCancel}
               >
                 <i className="fa-solid fa-ban me-2"></i>
                 Cancel

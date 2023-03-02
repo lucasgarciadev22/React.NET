@@ -1,11 +1,11 @@
-import { ActivityListGenProps } from "../../models/ActivityProps";
+import { IActivityListGenProps } from "../../models/IActivityProps";
 import ActivityCard from "./ActivityCard";
 
-const ActivityListGen: React.FC<ActivityListGenProps> = ({
+const ActivityListGen: React.FC<IActivityListGenProps> = ({
   activities,
   editActivity,
   handleShowConfirm,
-}: ActivityListGenProps) => {
+}: IActivityListGenProps) => {
   return (
     <div className="mt-3">
       {activities.length > 0 ? (

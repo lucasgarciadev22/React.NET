@@ -1,28 +1,31 @@
-import { ActivityCardProps } from "../../models/ActivityProps";
+import { Priority } from "../../models/IActivity";
+import { IActivityCardProps } from "../../models/IActivityProps";
 
-const ActivityCard: React.FC<ActivityCardProps> = ({
+const ActivityCard: React.FC<IActivityCardProps> = ({
   act,
   editActivity,
   handleShowConfirm,
-}: ActivityCardProps) => {
-  function priorityLabel(param: string) {
+}: IActivityCardProps) => {
+  function priorityLabel(param: Priority) {
     switch (param) {
-      case "Low":
-      case "Normal":
-      case "High":
-        return param;
+      case Priority.Low:
+        return "Low"
+      case Priority.Medium:
+        return "Medium"
+      case Priority.High:
+        return "High";
       default:
-        return "Unknown";
+        return "Undefined";
     }
   }
 
-  function priorityIcon(param: string, icon: boolean) {
+  function priorityIcon(param: Priority, icon: boolean) {
     switch (param) {
-      case "Low":
+      case Priority.Low:
         return icon ? "smile" : "success";
-      case "Normal":
+      case Priority.Medium:
         return icon ? "meh" : "warning";
-      case "High":
+      case Priority.High:
         return icon ? "frown" : "danger";
       default:
         return "Unknown";
@@ -30,7 +33,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   }
 
   return (
-    <div className={"card mb-2 shadow-sm border-" + priorityIcon(act.priority,false)}>
+    <div className={"card mb-2 shadow-sm border-" + priorityIcon(act.priority, false)}>
       <div className="card-body">
         <div className="d-flex justify-content-between">
           <h5 className="card-title">
@@ -39,7 +42,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
           </h5>
           <h6>
             Priority:
-            <span className={"ms-1 text-" + priorityIcon(act.priority,false)}>
+            <span className={"ms-1 text-" + priorityIcon(act.priority, false)}>
               <i
                 className={"me-1 far fa-" + priorityIcon(act.priority, true)}
               ></i>
