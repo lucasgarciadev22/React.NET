@@ -1,23 +1,34 @@
 import { useState, useEffect } from "react";
+import { Activity } from "../../models/Activity";
 
-const initialActivity = {
+const initialActivity: Activity = {
   id: 0,
-  title: "",
-  priority: 0,
   description: "",
+  priority: "Low",
+  title: "",
 };
 
-export default function ActivityForm(props) {
+interface ActivityFormProps {
+  selectedActivity: Activity;
+  updateActivity: (activity: Activity) => void;
+  addActivity: (activity: Activity) => void;
+}
+
+const ActivityForm: React.FC<ActivityFormProps> = ({
+  selectedActivity,
+  updateActivity,
+  addActivity,
+}: ActivityFormProps) => {
   const [activity, setActivity] = useState(currentActivity());
   const [priorityColor, setPriorityColor] = useState(handlePriorityColor());
 
   useEffect(() => {
-    if (props.activity.id !== 0) {
-      setActivity(props.activity);
+    if (selectedActivity.id !== 0) {
+      setActivity(selectedActivity);
     }
-  }, [props.activity]);
+  }, [selectedActivity]);
 
-  function handlePriorityColor(param) {
+  function handlePriorityColor(param?: string) {
     switch (param) {
       case "1":
         return "green";
@@ -40,8 +51,8 @@ export default function ActivityForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (props.activity.id !== 0) props.updateActivity(activity);
-    else props.addActivity(activity);
+    if (selectedActivity.id !== 0) updateActivity(activity);
+    else addActivity(activity);
 
     setActivity(initialActivity);
   };
@@ -49,14 +60,14 @@ export default function ActivityForm(props) {
   const handleCancel = (e) => {
     e.preventDefault();
 
-    props.cancelActivity();
+    cancelActivity();
 
     setActivity(initialActivity);
   };
 
   function currentActivity() {
-    if (props.activity.id !== 0) {
-      return props.activity;
+    if (selectedActivity.id !== 0) {
+      return selectedActivity;
     } else {
       return initialActivity;
     }
@@ -130,4 +141,6 @@ export default function ActivityForm(props) {
       </form>
     </>
   );
-}
+};
+
+export default ActivityForm;

@@ -1,14 +1,4 @@
-interface ActivityObject {
-  id: number;
-  priority: string;
-  title: string;
-  description: string;
-}
-interface ActivityCardProps {
-  act: ActivityObject;
-  editActivity: (id: number) => void;
-  handleShowConfirm: (id: number) => void;
-}
+import { ActivityCardProps } from "../../models/ActivityProps";
 
 const ActivityCard: React.FC<ActivityCardProps> = ({
   act,
