@@ -35,7 +35,7 @@ function TemperatureConverterCard({
       <Card.Body style={{ textAlign: "center", padding: "2rem" }}>
         <Card.Title style={{ fontSize: "2rem", fontWeight: "bold" }}>
           <div
-            style={{ fontSize: "3rem", fontWeight: "bold" }}
+            style={{ fontSize: "2.5rem", fontWeight: "bold" }}
             dangerouslySetInnerHTML={{ __html: highlightedConvertedTemperature }}
           />
         </Card.Title>
