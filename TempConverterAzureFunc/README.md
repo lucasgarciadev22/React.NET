@@ -1,0 +1,2 @@
+## Temperature Converter with Azure Functions + React UI
+### This project implements a React Interface that will consume from a Azure Function in cloud that provides the temperature conversions Celsius -> Fahrenheit and the opposite.
