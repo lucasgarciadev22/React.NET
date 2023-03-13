@@ -3,6 +3,7 @@ import TemperatureConverterForm from "./components/TemperatureConverterForm";
 import TemperatureConverterCard from "./components/TemperatureConverterCard";
 import { ConversionType } from "./models/ITemperatureConverterFormProps";
 import api from "./api/TempConverterAzureFunc";
+import TitlePage from "./components/TitlePage";
 
 interface Conversion {
   conversionType: ConversionType;
@@ -10,7 +11,7 @@ interface Conversion {
   result: string;
 }
 
-function App(): JSX.Element {
+const App: React.FC = () => {
   const [conversions, setConversions] = useState<Conversion[]>([]);
 
   const handleConversion = async (
@@ -40,12 +41,11 @@ function App(): JSX.Element {
   return (
     <>
       <div style={{ margin: "24px", textAlign: "center" }}>
-        <div style={{ margin: "16px", display:"flex" }}>
-          <h1>Temperature Converter</h1>
-          <img src="./img/logo.png" alt="Logo" style={{margin:"16px"}}/>
-        </div>
+        <TitlePage
+          title="Temperature Converter Azure Functions"
+          icon="fa-solid fa-temperature-arrow-up"
+        />
         <br />
-        <hr />
         <TemperatureConverterForm onConvert={handleConversion} />
         <div
           style={{
@@ -57,7 +57,7 @@ function App(): JSX.Element {
         >
           {conversions.map((conversion, index) => (
             <>
-              <div style={{ margin: "16px", width: "500px" }}>
+              <div style={{ margin: "16px", width: "500px"}}>
                 <TemperatureConverterCard
                   key={index}
                   id={index}
@@ -72,6 +72,6 @@ function App(): JSX.Element {
       </div>
     </>
   );
-}
+};
 
 export default App;

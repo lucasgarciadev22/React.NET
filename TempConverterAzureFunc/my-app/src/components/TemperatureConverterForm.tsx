@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { ConversionType, TemperatureConverterFormProps } from "../models/ITemperatureConverterFormProps";
-import { Button, Form } from 'react-bootstrap';
+import {
+  ConversionType,
+  TemperatureConverterFormProps,
+} from "../models/ITemperatureConverterFormProps";
+import { Button, Form } from "react-bootstrap";
 
-function TemperatureConverterForm({
+const TemperatureConverterForm: React.FC<TemperatureConverterFormProps> = ({
   onConvert,
-}: TemperatureConverterFormProps) {
+}: TemperatureConverterFormProps) => {
   const [temperature, setTemperature] = useState<number>(0);
   const [conversionType, setConversionType] = useState<ConversionType>(
     ConversionType.CelsiusToFahrenheit
@@ -18,7 +21,8 @@ function TemperatureConverterForm({
 
   const handleConversionTypeChange = (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => { const value = event.target.value;
+  ) => {
+    const value = event.target.value;
     if (value === "CelsiusToFahrenheit") {
       setConversionType(ConversionType.CelsiusToFahrenheit);
     } else if (value === "FahrenheitToCelsius") {
@@ -34,7 +38,7 @@ function TemperatureConverterForm({
     <div className="d-flex justify-content-center">
       <Form className="border p-3 rounded">
         <Form.Group controlId="conversionType">
-          <Form.Check 
+          <Form.Check
             type="radio"
             label="Celsius to Fahrenheit"
             name="conversionType"
@@ -44,7 +48,7 @@ function TemperatureConverterForm({
             inline
             className="mr-3"
           />
-          <Form.Check 
+          <Form.Check
             type="radio"
             label="Fahrenheit to Celsius"
             name="conversionType"
@@ -55,7 +59,7 @@ function TemperatureConverterForm({
           />
         </Form.Group>
         <Form.Group controlId="temperature">
-          <Form.Control 
+          <Form.Control
             type="number"
             value={temperature}
             onChange={handleTemperatureChange}
@@ -63,8 +67,8 @@ function TemperatureConverterForm({
             placeholder="Enter temperature"
           />
         </Form.Group>
-        <Button 
-          variant="success" 
+        <Button
+          variant="success"
           onClick={handleConvertClick}
           className="rounded-pill px-4"
         >
@@ -73,6 +77,6 @@ function TemperatureConverterForm({
       </Form>
     </div>
   );
-}
+};
 
 export default TemperatureConverterForm;

@@ -1,12 +1,16 @@
-import { TemperatureConverterCardProps, getConversionTypeText } from "../models/ITemperatureConverterCardProps";
+import {
+  TemperatureConverterCardProps,
+  getConversionTypeText,
+} from "../models/ITemperatureConverterCardProps";
 import "../styles/TemperatureConverterCardStyles.css";
 import Card from "react-bootstrap/Card";
-function TemperatureConverterCard({
+
+const TemperatureConverterCard: React.FC<TemperatureConverterCardProps> = ({
   id,
   temperature,
   conversionType,
   convertedTemperature,
-}: TemperatureConverterCardProps) {
+}: TemperatureConverterCardProps) => {
   const conversionTypeText = getConversionTypeText(conversionType);
 
   // Regular expression to find temperature values in the converted string
@@ -19,7 +23,11 @@ function TemperatureConverterCard({
   );
 
   return (
-    <Card bg="light" border="secondary" style={{ borderRadius: "20px",boxSizing:"border-box"}}>
+    <Card
+      bg="light"
+      border="secondary"
+      style={{ borderRadius: "20px", boxSizing: "border-box",minHeight:"325px"}}
+    >
       <Card.Header
         style={{
           backgroundColor: "#00BF63",
@@ -30,19 +38,23 @@ function TemperatureConverterCard({
           padding: "0.5rem",
         }}
       >
-        #{id} - {temperature} {conversionTypeText}
+       #{id} - {temperature} {conversionTypeText}<i className="ms-3 fa-solid fa-arrows-rotate"></i> 
       </Card.Header>
       <Card.Body style={{ textAlign: "center", padding: "2rem" }}>
         <Card.Title style={{ fontSize: "2rem", fontWeight: "bold" }}>
           <div
             style={{ fontSize: "2.5rem", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: highlightedConvertedTemperature }}
+            dangerouslySetInnerHTML={{
+              __html: highlightedConvertedTemperature,
+            }}
           />
         </Card.Title>
-        <Card.Text style={{ fontSize: "1.5rem", fontWeight: "bold" }}></Card.Text>
+        <Card.Text
+          style={{ fontSize: "1.5rem", fontWeight: "bold"}}
+        ></Card.Text>
       </Card.Body>
     </Card>
   );
-}
+};
 
 export default TemperatureConverterCard;
