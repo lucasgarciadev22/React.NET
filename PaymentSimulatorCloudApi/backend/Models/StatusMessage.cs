@@ -7,17 +7,17 @@ namespace tech_test_payment_api.Models
             switch (status)
             {
                 case OrderStatus.Awaiting:
-                return "Aguardando pagamento";
+                return "Awaiting payment";
                 case OrderStatus.Approved:
-                    return "Pagamento aprovado";
+                    return "Payment approved";
                 case OrderStatus.Transporting:
-                    return "Enviado para transportadora";
+                    return "Sent to transporting";
                 case OrderStatus.Delivered:
-                    return "Entregue";
+                    return "Delivered";
                 case OrderStatus.Canceled:
-                    return "Cancelada";
+                    return "Canceled";
                 default:
-                    return "Status desconhecdo";
+                    return "Unknown status";
             }
         }
     }
