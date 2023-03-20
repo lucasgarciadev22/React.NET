@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Seller } from "../models/Seller";
 
-const Seller: React.FC = () => {
+const SellerComponent: React.FC = () => {
   const [sellers, setSellers] = useState<Seller[]>([]);
   const [selectedSeller, setSelectedSeller] = useState<Seller | null>(null);
   const [mode, setMode] = useState<"create" | "edit" | "view" | null>(null);
@@ -182,4 +182,4 @@ const Seller: React.FC = () => {
   );
 };
 
-export default Seller;
+export default SellerComponent;

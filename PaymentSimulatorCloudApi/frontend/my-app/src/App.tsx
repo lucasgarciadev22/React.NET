@@ -1,10 +1,10 @@
 import './App.css';
-import Seller from './components/SellerComponent';
+import SellerComponent from './components/SellerComponent';
 
 function App() {
   return (
 
-    <Seller/>
+    <SellerComponent/>
  
   );
 }
