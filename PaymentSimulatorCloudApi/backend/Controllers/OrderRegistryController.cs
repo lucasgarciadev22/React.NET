@@ -52,7 +52,7 @@ namespace tech_test_payment_api.Controllers
         return BadRequest("O CPF do vendedor está errado, verifique e tente novamente.");
       }
       orderRegistry.StatusMessage = StatusMessage.ShowStatusMessage(OrderStatus.Awaiting);
-      if (orderRegistry.OrderProducts == "" || orderRegistry.OrderProducts == string.Empty)
+      if (orderRegistry.OrderProductsJson == string.Empty || orderRegistry.OrderProducts == null)
       {
         return BadRequest("Uma ordem de compra deve possuir pelo menos 1 produto");
       }

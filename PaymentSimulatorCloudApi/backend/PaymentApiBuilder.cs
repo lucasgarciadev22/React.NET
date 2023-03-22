@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<OrderContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("StandardLocalConnection")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("StandardDBConnection")));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(options =>
   options.SwaggerDoc("v1", new OpenApiInfo
   {
     Version = "v1",
-    Title = "Payment API Final Test",
+    Title = "Azure Payment API NET + React",
     Description = "A .NET 6.0 Web API to simulate payment and delivery process in a e-commerce." +
     "It uses Entity Framework as data persistence tool and follows the REST protocol.",
     TermsOfService = new Uri("https://gitlab.com/lucasgarciadev22/tech-test-payment-api"),
