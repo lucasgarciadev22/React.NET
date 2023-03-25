@@ -18,24 +18,24 @@ namespace tech_test_payment_api.Controllers
     }
 
     /// <summary>
-    /// Registra a ordem de compra se o vendedor estiver registrado.
+    /// Registers the purchase order if the seller is registered.
     /// </summary>
-    /// <param nameof="Order to Register"></param>
-    /// <returns>Uma nova ordem de compra gerada</returns>
+    /// <param name="OrderToRegister"></param>
+    /// <returns>A new generated purchase order</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):         
+    /// Example of request (required parameters):
     ///
-    ///     POST /OrderRegistry
-    ///     {
-    ///        "sellerId": 0,
-    ///        "sellerCpf": "888558496-88",
-    ///        "orderNumber": "89844898",
-    ///        "orderProducts": "#Item 1 (min. 1 item)",
-    ///     }
+    /// POST /OrderRegistry
+    /// {
+    /// "sellerId": 0,
+    /// "sellerCpf": "888558496-88",
+    /// "orderNumber": "89844898",
+    /// "orderProducts": "#Item 1 (min. 1 item)",
+    /// }
     /// </remarks>
-    /// <response code="201">Se a ordem foi criada com sucesso</response>
-    /// <response code="400">Se as credenciais estiverem erradas</response>
-    /// <response code="404">Se a ordem não for encontrada</response>
+    /// <response code="201">If the order was successfully created</response>
+    /// <response code="400">If the credentials are incorrect</response>
+    /// <response code="404">If the order is not found</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,16 +45,16 @@ namespace tech_test_payment_api.Controllers
       var registeredSeller = _context.Sellers.Find(orderRegistry.SellerId);
       if (registeredSeller == null)
       {
-        return NotFound("O vendedor não existe, registre-o primeiro.");
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{orderRegistry.SellerId}", _context.Database.ProviderName, ActionType.Get));
       }
       if (registeredSeller.Cpf != orderRegistry.SellerCpf)
       {
-        return BadRequest("O CPF do vendedor está errado, verifique e tente novamente.");
+        return BadRequest("Seller's Registration number is wrong, try again.");
       }
       orderRegistry.StatusMessage = StatusMessage.ShowStatusMessage(OrderStatus.Awaiting);
       if (orderRegistry.OrderProductsJson == string.Empty || orderRegistry.OrderProducts == null)
       {
-        return BadRequest("Uma ordem de compra deve possuir pelo menos 1 produto");
+        return BadRequest("An order registry must have at least 1 product.");
       }
       _context.Add(orderRegistry);
       _context.SaveChanges();
@@ -63,20 +63,20 @@ namespace tech_test_payment_api.Controllers
     }
 
     /// <summary>
-    /// Busca uma ordem de compra de acordo com o Id fornecido.
+    /// Fetches a purchase order based on the provided Id.
     /// </summary>
-    /// <param nameof="Order Id to Find"></param>
-    /// <returns>Uma ordem de compra encontrada</returns>
+    /// <param nameof="OrderToFind"></param>
+    /// <returns>A found purchase order</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):         
+    ///   Request example (mandatory parameters):         
     ///
     ///     GET /OrderRegistry
     ///     {
     ///        "id": 1,
     ///     }
     /// </remarks>
-    /// <response code="200">Se a requisição retornar uma ordem</response>
-    /// <response code="404">Se a ordem não for encontrada</response>
+    /// <response code="200">If the request returns a purchase order</response>
+    /// <response code="404">If the order is not found</response>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,29 +85,30 @@ namespace tech_test_payment_api.Controllers
       var orderRegistry = _context.OrderRegistries.Find(id);
       if (orderRegistry == null)
       {
-        return NotFound("Ordem de compra não encontrada, verifique os dados e tente novamente.");
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", _context.Database.ProviderName, ActionType.Get));
       }
       return Ok(orderRegistry);
     }
 
     /// <summary>
-    /// Atualiza o status da ordem de compra de acordo com o fluxo de operação.
+    /// Updates the status of a purchase order according to the operation flow.
     /// </summary>
-    /// <param nameof="Order Id to Update"></param>
-    /// <returns>A ordem de compra atualizada</returns>
+    /// <param nameof="OrderToUpdate"></param>
+    /// <returns>The updated purchase order</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):
-    ///   OrderStatus -> 0: Aguardando pagamento, 1: Pagamento aprovado, 2: Enviado para transportadora, 3: Entregue, 4: Cancelada, 5: Não permitido              
+    ///   Request example (mandatory parameters):
+    ///   OrderStatus -> 0: Awaiting payment, 1: Payment approved, 2: Sent to carrier, 3: Delivered, 4: Cancelled, 5: Not allowed              
     ///
     ///     PUT /OrderRegistry
     ///     {
     ///        "id": 0,
-    ///        "orderStatus": 0  (de acordo com enum),
+    ///        "orderStatus": 0 (according to enum),
     ///     }
     /// </remarks>
-    /// <response code="200">Se a ordem for atualizada com sucesso</response>
-    /// <response code="400">Se as credenciais estiverem erradas</response>
-    /// <response code="404">Se a ordem não for encontrada</response>
+    /// <response code="200">If the order is updated successfully</response>
+    /// <response code="400">If the credentials are wrong</response>
+    /// <response code="404">If the order is not found</response>
+
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -117,29 +118,30 @@ namespace tech_test_payment_api.Controllers
       var orderRegistryToEdit = _context.OrderRegistries.Find(id);
       if (orderRegistryToEdit == null)
       {
-        return NotFound();
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", _context.Database.ProviderName, ActionType.Get));
       }
       OrderStatus oldStatus = orderRegistryToEdit.OrderStatus;
 
       if (orderRegistryToEdit.OrderStatus == OrderStatus.Canceled)
       {
-        return BadRequest("A ordem já foi cancelada");
+        return BadRequest("Order was canceled.");
       }
 
       orderRegistryToEdit.OrderStatus = VerifyNewStatus(orderRegistryToEdit.OrderStatus, newStatus);
 
       if (orderRegistryToEdit.OrderStatus == OrderStatus.NotAllowed)
       {
-        return BadRequest("Não foi possível alterar o status dessa ordem, verifique as regras de alteração de status.");
+        return BadRequest("Couldn't change the status of this order, please check the status changing rules.");
       }
       orderRegistryToEdit.StatusMessage = StatusMessage.ShowStatusMessage(orderRegistryToEdit.OrderStatus);
 
       _context.OrderRegistries.Update(orderRegistryToEdit);
       _context.SaveChanges();
 
-      return Ok($"O status da ordem {orderRegistryToEdit.Id} foi alterado para {orderRegistryToEdit.StatusMessage}");
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", _context.Database.ProviderName, ActionType.Update));
     }
 
+    #region Auxiliary Methods
     OrderStatus VerifyNewStatus(OrderStatus oldStatus, OrderStatus newStatus)
     {
       OrderStatus resultStatus = new OrderStatus();
@@ -167,5 +169,6 @@ namespace tech_test_payment_api.Controllers
       }
       return resultStatus;
     }
+    #endregion
   }
 }

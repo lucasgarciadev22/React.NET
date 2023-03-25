@@ -12,6 +12,15 @@ namespace tech_test_payment_api.Context
     }
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<OrderRegistry> OrderRegistries { get; set; }
+
+    //mapping foreign key Seller.Id in Seller table
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<OrderRegistry>()
+          .HasOne(o => o.Seller)
+          .WithMany()
+          .HasForeignKey(o => o.SellerId);
+    }
   }
-  #pragma warning restore CS1591
+#pragma warning restore CS1591
 }

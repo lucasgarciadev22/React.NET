@@ -11,6 +11,7 @@ namespace tech_test_payment_api.Models
     public string StatusMessage { get; set; }
     [ForeignKey("Seller")]
     public int SellerId { get; set; }
+    public virtual Seller Seller { get; set; }
     public string SellerCpf { get; set; }
     public string SellerName { get; set; }
     public string SellerEmail { get; set; }
@@ -20,9 +21,10 @@ namespace tech_test_payment_api.Models
     public OrderStatus OrderStatus { get; set; }
     public string OrderProductsJson
     {
-      get => JsonSerializer.Serialize(OrderProducts);
-      set => OrderProducts = JsonSerializer.Deserialize<OrderProduct[]>(value);
+      get => OrderProducts != null ? JsonSerializer.Serialize(OrderProducts) : null;
+      set => OrderProducts = value != null ? JsonSerializer.Deserialize<OrderProduct[]>(value) : null;
     }
+
     [NotMapped]
     public OrderProduct[] OrderProducts { get; set; }
 

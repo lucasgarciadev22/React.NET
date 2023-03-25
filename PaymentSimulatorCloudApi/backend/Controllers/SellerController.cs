@@ -17,22 +17,22 @@ namespace tech_test_payment_api.Controllers
       _context = context;
     }
     /// <summary>
-    /// Registra um novo vendedor no banco de dados.
+    /// Registers a new seller in the database.
     /// </summary>
-    /// <param nameof="Seller to Register"></param>
-    /// <returns>Um novo vendedor registrado</returns>
+    /// <param name="SellerToRegister"></param>
+    /// <returns>A newly registered seller</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):                                                                                 
-    ///   Id -> auto incrementado pelo SQL.                                                                                  
+    /// Example of request (mandatory parameters):
+    /// Id -> auto-incremented by SQL.
     ///
-    ///     POST /Seller
-    ///     {
-    ///        "cpf": "555555888-88", 
-    ///     }
+    /// POST /Seller
+    /// {
+    /// "cpf": "555555888-88",
+    /// }
     /// </remarks>
-    /// <response code="201">Se o vendedor foi registrado com sucesso</response>
-    /// <response code="400">Se as credenciais estiverem erradas</response>
-    /// <response code="404">Se o vendedor não for encontrado</response>
+    /// <response code="201">If the seller was successfully registered</response>
+    /// <response code="400">If the credentials are incorrect</response>
+    // // // /// <response code="404">If the seller is not found</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,20 +44,20 @@ namespace tech_test_payment_api.Controllers
       return CreatedAtAction(nameof(GetSellerById), new { id = seller.Id }, seller);
     }
     /// <summary>
-    /// Busca um vendedor de acordo com o Id fornecido.
+    /// Searches for a seller based on the provided Id.
     /// </summary>
-    /// <param nameof="Seller to Find"></param>
+    /// <param name="SellerToFind"></param>
     /// <returns></returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):         
+    /// Example of request (mandatory parameters):
     ///
-    ///     GET /Seller
-    ///     {
-    ///        "id": 1,
-    ///     }
+    /// GET /Seller
+    /// {
+    /// "id": 1,
+    /// }
     /// </remarks>
-    /// <response code="200">Se a requisição retornar um vendedor</response>
-    /// <response code="404">Se a ordem não for encontrada</response>
+    /// <response code="200">If the request returns a seller</response>
+    /// <response code="404">If the seller is not found</response>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -66,25 +66,25 @@ namespace tech_test_payment_api.Controllers
       var seller = _context.Sellers.Find(id);
       if (seller == null)
       {
-        return NotFound();
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", _context.Database.ProviderName, ActionType.Get));
       }
       return Ok(seller);
     }
     /// <summary>
-    /// Atualiza as informações de um vendedor previamente registrado.
+    /// Updates the information of a previously registered seller.
     /// </summary>
-    /// <param nameof="Seller to Update"></param>
-    /// <returns>Informações do vendedor atualizadas</returns>
+    /// <param name="SellerToUpdate"></param>
+    /// <returns>Updated seller information</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):         
+    /// Example of request (required parameters):
     ///
-    ///     PUT /Seller
-    ///     {
-    ///        "id": 1,
-    ///     }
+    /// PUT /Seller
+    /// {
+    /// "id": 1,
+    /// }
     /// </remarks>
-    /// <response code="200">Se a requisição atualizar o vendedor com sucesso</response>
-    /// <response code="404">Se o vendedor não for encontrado</response>
+    /// <response code="200">If the request successfully updates the seller</response>
+    /// <response code="404">If the seller is not found</response>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -95,7 +95,7 @@ namespace tech_test_payment_api.Controllers
 
       if (sellerToEdit == null)
       {
-        return NotFound("Vendedor não encontrado, registre-o primeiro.");
+        return NotFound();
       }
 
       sellerToEdit.Cpf = seller.Cpf;
@@ -106,23 +106,23 @@ namespace tech_test_payment_api.Controllers
       _context.Sellers.Update(sellerToEdit);
       _context.SaveChanges();
 
-      return Ok($"Dados do vendedor {sellerToEdit.Name} foram alterados.");
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{sellerToEdit.Id}", _context.Database.ProviderName, ActionType.Update));
     }
     /// <summary>
-    /// Remove um vendedor do banco de dados de acordo com o Id fornecido.
+    /// Removes a seller from the database according to the provided Id.
     /// </summary>
     /// <param nameof="Seller to Delete"></param>
-    /// <returns>Informa qual vendedor foi removido</returns>
+    /// <returns>Informs which seller has been removed</returns>
     /// <remarks>
-    ///   Exemplo de requisição (parâmetros obrigatórios):         
+    ///   Example request (required parameters):         
     ///
     ///     PUT /Seller
     ///     {
     ///        "id": 1,
     ///     }
     /// </remarks>
-    /// <response code="200">Se a requisição remover o vendedor com sucesso</response>
-    /// <response code="404">Se o vendedor não for encontrado</response>
+    /// <response code="200">If the request successfully removes the seller</response>
+    /// <response code="404">If the seller is not found</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -132,13 +132,13 @@ namespace tech_test_payment_api.Controllers
 
       if (sellerToDelete == null)
       {
-        return NotFound("Vendedor não encontrado, registre-o primeiro.");
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{seller.Id}", _context.Database.ProviderName, ActionType.Get));
       }
 
       _context.Sellers.Remove(sellerToDelete);
       _context.SaveChanges();
 
-      return Ok($"Dados do vendedor {sellerToDelete.Name} foram removidos.");
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{seller.Id}", _context.Database.ProviderName, ActionType.Remove));
     }
   }
 }
