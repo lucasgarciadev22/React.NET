@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tech_test_payment_api.Context;
 using tech_test_payment_api.Models;
+using tech_test_payment_api.Models.Helpers;
 
 namespace tech_test_payment_api.Controllers
 {
@@ -66,7 +67,7 @@ namespace tech_test_payment_api.Controllers
       var seller = _context.Sellers.Find(id);
       if (seller == null)
       {
-        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", _context.Database.ProviderName, ActionType.Get));
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
       return Ok(seller);
     }
@@ -91,27 +92,27 @@ namespace tech_test_payment_api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult EditSellerInfo(int id, Seller seller)
     {
-      var sellerToEdit = _context.Sellers.Find(id);
+      var sellerToUpdate = _context.Sellers.Find(id);
 
-      if (sellerToEdit == null)
+      if (sellerToUpdate == null)
       {
-        return NotFound();
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
       }
 
-      sellerToEdit.Cpf = seller.Cpf;
-      sellerToEdit.Name = seller.Name;
-      sellerToEdit.Email = seller.Email;
-      sellerToEdit.Phone = seller.Phone;
+      sellerToUpdate.Cpf = seller.Cpf;
+      sellerToUpdate.Name = seller.Name;
+      sellerToUpdate.Email = seller.Email;
+      sellerToUpdate.Phone = seller.Phone;
 
-      _context.Sellers.Update(sellerToEdit);
+      _context.Sellers.Update(sellerToUpdate);
       _context.SaveChanges();
 
-      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{sellerToEdit.Id}", _context.Database.ProviderName, ActionType.Update));
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{sellerToUpdate.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
     }
     /// <summary>
     /// Removes a seller from the database according to the provided Id.
     /// </summary>
-    /// <param nameof="Seller to Delete"></param>
+    /// <param nameof="SellerToDelete"></param>
     /// <returns>Informs which seller has been removed</returns>
     /// <remarks>
     ///   Example request (required parameters):         
@@ -132,13 +133,13 @@ namespace tech_test_payment_api.Controllers
 
       if (sellerToDelete == null)
       {
-        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{seller.Id}", _context.Database.ProviderName, ActionType.Get));
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
 
       _context.Sellers.Remove(sellerToDelete);
       _context.SaveChanges();
 
-      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{seller.Id}", _context.Database.ProviderName, ActionType.Remove));
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.Seller, $"{sellerToDelete.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Remove));
     }
   }
 }

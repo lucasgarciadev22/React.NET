@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tech_test_payment_api.Context;
 using tech_test_payment_api.Models;
+using tech_test_payment_api.Models.Helpers;
 
 namespace tech_test_payment_api.Controllers
 {
@@ -45,7 +47,7 @@ namespace tech_test_payment_api.Controllers
       var registeredSeller = _context.Sellers.Find(orderRegistry.SellerId);
       if (registeredSeller == null)
       {
-        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{orderRegistry.SellerId}", _context.Database.ProviderName, ActionType.Get));
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{orderRegistry.SellerId}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
       if (registeredSeller.Cpf != orderRegistry.SellerCpf)
       {
@@ -56,8 +58,15 @@ namespace tech_test_payment_api.Controllers
       {
         return BadRequest("An order registry must have at least 1 product.");
       }
-      _context.Add(orderRegistry);
-      _context.SaveChanges();
+      if (registeredSeller != null)
+      {
+        _context.Entry(registeredSeller).State = EntityState.Detached;
+      }
+      if (_context.Entry(registeredSeller).State == EntityState.Detached)
+      {
+        _context.Add(orderRegistry);
+        _context.SaveChanges();
+      }
 
       return CreatedAtAction(nameof(GetOrderRegistryById), new { id = orderRegistry.Id }, orderRegistry);
     }
@@ -85,7 +94,7 @@ namespace tech_test_payment_api.Controllers
       var orderRegistry = _context.OrderRegistries.Find(id);
       if (orderRegistry == null)
       {
-        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", _context.Database.ProviderName, ActionType.Get));
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
       return Ok(orderRegistry);
     }
@@ -118,7 +127,7 @@ namespace tech_test_payment_api.Controllers
       var orderRegistryToEdit = _context.OrderRegistries.Find(id);
       if (orderRegistryToEdit == null)
       {
-        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", _context.Database.ProviderName, ActionType.Get));
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
       OrderStatus oldStatus = orderRegistryToEdit.OrderStatus;
 
@@ -138,7 +147,7 @@ namespace tech_test_payment_api.Controllers
       _context.OrderRegistries.Update(orderRegistryToEdit);
       _context.SaveChanges();
 
-      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", _context.Database.ProviderName, ActionType.Update));
+      return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
     }
 
     #region Auxiliary Methods

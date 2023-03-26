@@ -38,7 +38,7 @@ namespace tech_test_payment_api.Models
       switch (actionType)
       {
         case ActionType.Get:
-        return $"{classType}: {propertyName} not found in {databaseName}. Please, register {propertyName} data first.";
+        return $"{classType}: {propertyName} not found in {databaseName}. Please, register {classType}: {propertyName} data first.";
         default:
           return "Unknown error message";
       }
