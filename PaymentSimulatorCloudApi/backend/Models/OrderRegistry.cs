@@ -25,7 +25,7 @@ namespace tech_test_payment_api.Models
     [NotMapped]
     public OrderProduct[] OrderProducts { get; set; }
 
-    public OrderRegistry(int sellerId, string orderNumber, DateTime orderDate, OrderProduct[] orderProducts, OrderStatus orderStatus)
+    public OrderRegistry(int sellerId, DateTime orderDate, OrderProduct[] orderProducts, OrderStatus orderStatus)
     {
       Seller seller;
       var contextOptions = new DbContextOptionsBuilder<OrderContext>();
@@ -40,7 +40,7 @@ namespace tech_test_payment_api.Models
       SellerName = seller.Name;
       SellerEmail = seller.Email;
       SellerPhone = seller.Phone;
-      OrderNumber = orderNumber;
+      OrderNumber = Guid.NewGuid().ToString().Substring(0, 8);
       OrderDate = orderDate;
       OrderProducts = orderProducts;
       OrderStatus = orderStatus;

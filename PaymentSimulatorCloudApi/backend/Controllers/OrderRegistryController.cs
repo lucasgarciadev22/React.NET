@@ -162,7 +162,7 @@ namespace tech_test_payment_api.Controllers
       _context.OrderRegistries.Update(orderRegistryToEdit);
       _context.SaveChanges();
 
-      OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Insert, orderRegistryToEdit.SellerCpf, Guid.NewGuid().ToString());
+      OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Update, orderRegistryToEdit.SellerCpf, Guid.NewGuid().ToString());
 
       _tableClient.UpsertEntity(orderRegistryLog);
 
