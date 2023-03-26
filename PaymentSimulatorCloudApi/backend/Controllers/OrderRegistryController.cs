@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Azure.Data.Tables;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tech_test_payment_api.Context;
@@ -13,10 +15,15 @@ namespace tech_test_payment_api.Controllers
   public class OrderRegistryController : ControllerBase
   {
     private readonly OrderContext _context;
-
-    public OrderRegistryController(OrderContext context)
+    private readonly string _storageAccConnection;
+    private readonly string _tableName;
+    private TableClient _tableClient;
+    public OrderRegistryController(OrderContext context, IConfiguration configuration)
     {
       _context = context;
+      _storageAccConnection = configuration.GetValue<string>("ConnectionStrings:StorageAccConnection");
+      _tableName = configuration.GetValue<string>("ConnectionStrings:AzureTableName");
+      _tableClient = GetAzureTableClient();
     }
 
     /// <summary>
@@ -66,6 +73,11 @@ namespace tech_test_payment_api.Controllers
       {
         _context.Add(orderRegistry);
         _context.SaveChanges();
+
+
+        OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistry, ActionType.Insert, orderRegistry.SellerCpf, Guid.NewGuid().ToString());
+
+        _tableClient.UpsertEntity(orderRegistryLog);
       }
 
       return CreatedAtAction(nameof(GetOrderRegistryById), new { id = orderRegistry.Id }, orderRegistry);
@@ -96,6 +108,9 @@ namespace tech_test_payment_api.Controllers
       {
         return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
+
+      orderRegistry.OrderProducts = JsonSerializer.Deserialize<OrderProduct[]>(orderRegistry.OrderProductsJson);
+
       return Ok(orderRegistry);
     }
 
@@ -147,11 +162,24 @@ namespace tech_test_payment_api.Controllers
       _context.OrderRegistries.Update(orderRegistryToEdit);
       _context.SaveChanges();
 
+      OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Insert, orderRegistryToEdit.SellerCpf, Guid.NewGuid().ToString());
+
+      _tableClient.UpsertEntity(orderRegistryLog);
+
       return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
     }
 
     #region Auxiliary Methods
-    OrderStatus VerifyNewStatus(OrderStatus oldStatus, OrderStatus newStatus)
+    private TableClient GetAzureTableClient()
+    {
+      TableServiceClient serviceClient = new TableServiceClient(_storageAccConnection);
+      TableClient tableClient = serviceClient.GetTableClient(_tableName);
+
+      tableClient.CreateIfNotExists();
+
+      return tableClient;
+    }
+    private OrderStatus VerifyNewStatus(OrderStatus oldStatus, OrderStatus newStatus)
     {
       OrderStatus resultStatus = new OrderStatus();
 
