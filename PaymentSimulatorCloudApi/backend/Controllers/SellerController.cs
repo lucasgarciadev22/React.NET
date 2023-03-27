@@ -1,3 +1,4 @@
+using Azure.Data.Tables;
 using Microsoft.AspNetCore.Mvc;
 using tech_test_payment_api.Context;
 using tech_test_payment_api.Models;
@@ -16,7 +17,7 @@ namespace tech_test_payment_api.Controllers
         private readonly string _tableName;
         private TableClient _tableClient;
 
-        public SellerController(OrderContext context)
+        public SellerController(OrderContext context, IConfiguration configuration)
         {
             _context = context;
             _storageAccConnection = configuration.GetValue<string>("ConnectionStrings:StorageAccConnection");

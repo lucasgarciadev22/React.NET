@@ -161,7 +161,7 @@ namespace tech_test_payment_api.Controllers
             _context.OrderRegistries.Update(orderRegistryToEdit);
             _context.SaveChanges();
 
-            OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Update, orderRegistryToEdit.orderNumber, Guid.NewGuid().ToString());
+            OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Update, orderRegistryToEdit.OrderNumber, Guid.NewGuid().ToString());
             _tableClient.UpsertEntity(orderRegistryLog);
 
             return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
@@ -177,16 +177,16 @@ namespace tech_test_payment_api.Controllers
 
             if (orderRegistryToDelete == null)
             {
-                return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, id, ContextHelper.GetCurrentCatalog(_context), ActionType.Remove));
+                return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Remove));
             }
 
             _context.OrderRegistries.Remove(orderRegistryToDelete);
             _context.SaveChanges();
 
-             OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToEdit, ActionType.Update, orderRegistryToEdit.orderNumber, Guid.NewGuid().ToString());
+             OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistryToDelete, ActionType.Update, orderRegistryToDelete.OrderNumber, Guid.NewGuid().ToString());
             _tableClient.UpsertEntity(orderRegistryLog);
 
-            return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Remove));
+            return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToDelete.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Remove));
         }
 
         #region Auxiliary Methods
