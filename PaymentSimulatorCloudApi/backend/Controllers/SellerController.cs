@@ -26,17 +26,17 @@ namespace tech_test_payment_api.Controllers
         }
 
         /// <summary>
-        /// Registers a new seller in the database.
+        /// Registers a new 'seller' in the database.
         /// </summary>
         /// <param name="SellerToRegister"></param>
-        /// <returns>A newly registered seller</returns>
+        /// <returns>A newly created 'seller'</returns>
         /// <remarks>
         /// Example of request (mandatory parameters):
         /// Id -> auto-incremented by SQL.
         ///
         /// POST /Seller
         /// {
-        /// "cpf": "555555888-88",
+        /// "cpf": "55555588888",
         /// }
         /// </remarks>
         /// <response code="201">If the seller was successfully registered</response>

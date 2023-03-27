@@ -14,17 +14,17 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("StandardDBConnec
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-  options.SwaggerDoc("v1.2", new OpenApiInfo
+  options.SwaggerDoc("v1", new OpenApiInfo
   {
-    Version = "v1.2",
+    Version = "v1",
     Title = "Azure Payment API NET + React",
     Description = "A NET 6.0 Web API to simulate payment & delivery processes in an e-commerce." +
     "It uses Entity Framework Core as ORM , data persistence in Azure Cloud (SQL Data Base & Azure Table) and follows the REST protocol.",
-    TermsOfService = new Uri("https://gitlab.com/lucasgarciadev22/tech-test-payment-api"),
+    TermsOfService = new Uri("https://github.com/lucasgarciadev22/ReactNET/tree/main/PaymentSimulatorCloudApi"),
     Contact = new OpenApiContact
     {
       Name = "Visit my Github",
-      Url = new Uri("https://github.com/lucasgarciadev22/lucasgarciadev22")
+      Url = new Uri("https://github.com/lucasgarciadev22")
     },
     License = new OpenApiLicense
     {
@@ -42,7 +42,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
   app.UseSwagger();
-  app.UseSwaggerUI();
+  app.UseSwaggerUI(config =>
+  {
+    config.SwaggerEndpoint("./v1/swagger.json","My API v1");
+  });
 }
 
 app.UseHttpsRedirection();
@@ -50,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseDeveloperExceptionPage();
 
 app.Run();

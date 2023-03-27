@@ -27,19 +27,19 @@ namespace tech_test_payment_api.Controllers
         }
 
         /// <summary>
-        /// Registers the purchase order if the seller is registered.
+        /// Registers a new 'order registry' if the 'seller' is already registered.
         /// </summary>
         /// <param name="OrderToRegister"></param>
-        /// <returns>A new generated purchase order</returns>
+        /// <returns>A newly created 'order registry'</returns>
         /// <remarks>
         /// Example of request (required parameters):
-        ///
+        /// Id-> auto-incremented by SQL.
         /// POST /OrderRegistry
         /// {
-        /// "sellerId": 0,
-        /// "sellerCpf": "888558496-88",
-        /// "orderNumber": "89844898",
-        /// "orderProducts": "#Item 1 (min. 1 item)",
+        /// "sellerId": 1,
+        /// "sellerCpf": "88855849688",
+        /// "orderNumber": "+5547988884444",
+        /// "orderProducts": "#Item 1 (min. 1 item) -> based on OrderProduct class",
         /// }
         /// </remarks>
         /// <response code="201">If the order was successfully created</response>
@@ -83,7 +83,7 @@ namespace tech_test_payment_api.Controllers
         }
 
         /// <summary>
-        /// Fetches a purchase order based on the provided Id.
+        /// Fetches an 'order registry' based on the given id.
         /// </summary>
         /// <param nameof="OrderToFind"></param>
         /// <returns>A found purchase order</returns>
@@ -95,7 +95,7 @@ namespace tech_test_payment_api.Controllers
         ///        "id": 1,
         ///     }
         /// </remarks>
-        /// <response code="200">If the request returns a purchase order</response>
+        /// <response code="200">If the request returns an 'order registry'</response>
         /// <response code="404">If the order is not found</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -114,7 +114,7 @@ namespace tech_test_payment_api.Controllers
         }
 
         /// <summary>
-        /// Updates the status of a purchase order according to the operation flow.
+        /// Updates the status and other informations of an 'order registry', based on the given id, according to the operation flow.
         /// </summary>
         /// <param nameof="OrderToUpdate"></param>
         /// <returns>The updated purchase order</returns>
@@ -124,8 +124,8 @@ namespace tech_test_payment_api.Controllers
         ///
         ///     PUT /OrderRegistry
         ///     {
-        ///        "id": 0,
-        ///        "orderStatus": 0 (according to enum),
+        ///        "id": 1,
+        ///        "orderStatus": 0-5 (according to enum),
         ///     }
         /// </remarks>
         /// <response code="200">If the order is updated successfully</response>
@@ -167,6 +167,22 @@ namespace tech_test_payment_api.Controllers
             return Ok(StatusMessage.ShowConfirmationMessage(ClassType.OrderRegistry, $"{orderRegistryToEdit.Id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Update));
         }
 
+        /// <summary>
+        /// Removes a specified 'order registry' from database, based on the given id.
+        /// </summary>
+        /// <param nameof="OrderToDelete"></param>
+        /// <returns>Confirmation that the object was removed</returns>
+        /// <remarks>
+        ///   Request example (mandatory parameters):
+        ///     DELETE /OrderRegistry
+        ///     {
+        ///        "id": 1,
+        ///     }
+        /// </remarks>
+        /// <response code="200">If the order is removed successfully</response>
+        /// <response code="400">If the credentials are wrong</response>
+        /// <response code="404">If the order is not found</response>
+        
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
