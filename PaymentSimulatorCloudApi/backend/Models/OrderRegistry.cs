@@ -40,7 +40,7 @@ namespace tech_test_payment_api.Models
       SellerName = seller.Name;
       SellerEmail = seller.Email;
       SellerPhone = seller.Phone;
-      OrderNumber = Guid.NewGuid().ToString().Substring(0, 8);
+      OrderNumber = Guid.NewGuid().ToString().Substring(0, 8);//get first 8 nums from GUID to use as order number
       OrderDate = orderDate;
       OrderProducts = orderProducts;
       OrderStatus = orderStatus;
