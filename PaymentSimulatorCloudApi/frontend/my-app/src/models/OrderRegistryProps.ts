@@ -1,4 +1,4 @@
-import { Seller } from "./Seller";
+import { Seller } from "./SellerProps";
 export interface OrderRegistry {
   id: number;
   statusMessage: string;
