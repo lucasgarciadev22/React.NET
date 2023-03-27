@@ -7,15 +7,24 @@ using Azure.Data.Tables;
 
 namespace tech_test_payment_api.Models
 {
-  public class SellerLog : Seller, ITableEntity
-  {
-    public SellerLog(int id, string cpf, string name, string email, string phone) : base(id, cpf, name, email, phone)
+    public class SellerLog : Seller, ITableEntity
     {
+        public ActionType ActionType { get; set; }
+        public string SellerJson { get; set; }
+        //Azure Table properties...
+        public string PartitionKey { get; set; }
+        public string RowKey { get; set; }
+        public DateTimeOffset? Timestamp { get; set; }
+        public ETag ETag { get; set; }
+        public SellerLog() { }
+        public SellerLog(Seller seller, ActionType actionType, string partitionKey, string rowKey)
+        {
+            base.Id = seller.Id;
+            base.Name = seller.Name;
+            ActionType = actionType;
+            SellerJson = JsonSerializer.Serialize(seller);
+            PartitionKey = partitionKey;
+            RowKey = rowKey;
+        }
     }
-
-    public string PartitionKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string RowKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public DateTimeOffset? Timestamp { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public ETag ETag { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-  }
 }

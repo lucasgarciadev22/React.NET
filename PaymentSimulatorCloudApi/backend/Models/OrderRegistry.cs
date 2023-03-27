@@ -25,6 +25,7 @@ namespace tech_test_payment_api.Models
     [NotMapped]
     public OrderProduct[] OrderProducts { get; set; }
 
+    public OrderRegistry() { }
     public OrderRegistry(int sellerId, DateTime orderDate, OrderProduct[] orderProducts, OrderStatus orderStatus)
     {
       Seller seller;
@@ -46,7 +47,5 @@ namespace tech_test_payment_api.Models
       OrderStatus = orderStatus;
       OrderProductsJson = JsonSerializer.Serialize(orderProducts);
     }
-    public OrderRegistry() { }
-
   }
 }

@@ -14,12 +14,12 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("StandardDBConnec
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-  options.SwaggerDoc("v1", new OpenApiInfo
+  options.SwaggerDoc("v1.2", new OpenApiInfo
   {
-    Version = "v1",
+    Version = "v1.2",
     Title = "Azure Payment API NET + React",
-    Description = "A .NET 6.0 Web API to simulate payment and delivery process in a e-commerce." +
-    "It uses Entity Framework as data persistence tool and follows the REST protocol.",
+    Description = "A NET 6.0 Web API to simulate payment & delivery processes in an e-commerce." +
+    "It uses Entity Framework Core as ORM , data persistence in Azure Cloud (SQL Data Base & Azure Table) and follows the REST protocol.",
     TermsOfService = new Uri("https://gitlab.com/lucasgarciadev22/tech-test-payment-api"),
     Contact = new OpenApiContact
     {

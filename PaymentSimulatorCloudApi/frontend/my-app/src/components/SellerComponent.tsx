@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Seller } from "../models/Seller";
+import { Seller } from "../models/SellerProps";
 
 const SellerComponent: React.FC = () => {
   const [sellers, setSellers] = useState<Seller[]>([]);
