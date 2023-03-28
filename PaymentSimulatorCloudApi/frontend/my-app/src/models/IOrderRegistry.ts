@@ -1,16 +1,16 @@
-import { Seller } from "./SellerProps";
-export interface OrderRegistry {
+import { ISeller } from './ISeller';
+export interface IOrderRegistry {
   id: number;
   statusMessage: string;
-  seller: Seller;
+  seller: ISeller;
   orderNumber: string;
   orderDate: Date;
   orderStatus: OrderStatus;
-  orderProducts:OrderProduct[];
+  orderProducts:IOrderProduct[];
   orderProductsJson:string;
 }
 
-export interface OrderProduct {
+export interface IOrderProduct {
   name: string;
   price: number;
   size: string;

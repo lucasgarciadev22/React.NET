@@ -1,6 +1,6 @@
 import { ActionType } from "./ActionType";
 
-export interface OrderRegistryLog {
+export interface IOrderRegistryLog {
     id: number;
     orderDate: Date;
     sellerCpf: string;

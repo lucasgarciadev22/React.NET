@@ -1,4 +1,4 @@
-export interface Seller {
+export interface ISeller {
   id: number;
   cpf: string;
   name: string;

@@ -1,6 +1,6 @@
 import { ActionType } from "./ActionType";
 
-export interface SellerLog {
+export interface ISellerLog {
     id: number;
     name: string;
     sellerJson: string;
