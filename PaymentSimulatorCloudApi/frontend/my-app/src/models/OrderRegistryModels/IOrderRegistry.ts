@@ -1,4 +1,4 @@
-import { ISeller } from './ISeller';
+import { ISeller } from './../SellerModels/ISeller';
 export interface IOrderRegistry {
   id: number;
   statusMessage: string;
