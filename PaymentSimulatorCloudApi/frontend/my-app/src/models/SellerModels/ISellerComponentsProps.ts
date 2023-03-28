@@ -1,4 +1,5 @@
 import { ISeller } from "./ISeller";
+import { ISellerLog } from "./ISellerLog";
 
 export interface ISellerCardProps {
   seller: ISeller;
@@ -17,6 +18,7 @@ export interface ISellerFormProps {
 
 export interface ISellersListProps {
   sellers: ISeller[];
+  sellersLogs: ISellerLog[];
   editSeller: (id: number) => void;
   handleModalConfirm: (id: number) => void;
 }
