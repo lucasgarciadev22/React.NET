@@ -1,12 +1,9 @@
-import './App.css';
-import SellerComponent from './components/SellerComponent';
+import "./App.css";
 
 function App() {
-  return (
-
-    <SellerComponent/>
- 
-  );
+  return 
+  <>
+  </>;
 }
 
 export default App;
