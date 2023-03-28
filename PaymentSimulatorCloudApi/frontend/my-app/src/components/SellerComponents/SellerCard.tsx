@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import { ISellerCardProps } from "./../../models/SellerModels/ISellerComponentsProps";
 
-export default function SellerCard() {
-    return (
-        <>
-            <div>SellerCard</div>
-        </>
-    )
-}
+const SellerCard: React.FC<ISellerCardProps> = ({
+  seller,
+  ordersCount,
+  profileImg,
+}) => {
+  return (
+    <>
+      <div>SellerCard</div>
+    </>
+  );
+};
+
+export default SellerCard;
