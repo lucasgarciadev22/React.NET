@@ -1,7 +1,6 @@
 import React from "react";
 import { ISellerCardProps } from "../../../models/seller-models/ISellerComponentsProps";
-import StyledCard from "./styled";
-import { Card } from "react-bootstrap";
+import * as S from "./styled";
 
 const SellerCard: React.FC<ISellerCardProps> = ({
   seller,
@@ -10,8 +9,9 @@ const SellerCard: React.FC<ISellerCardProps> = ({
 }) => {
   return (
     <>
-      <StyledCard title={`Seller ${seller.id} - ${seller.name}`} >
-      </StyledCard>
+      <S.CardMain title={`Seller ${seller.id} - ${seller.name}`} >
+        <S.Header/>
+      </S.CardMain>
     </>
   );
 };
