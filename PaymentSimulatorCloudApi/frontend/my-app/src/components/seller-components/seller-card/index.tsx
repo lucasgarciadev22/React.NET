@@ -1,5 +1,6 @@
 import React from "react";
-import { ISellerCardProps } from "../../models/seller-models/ISellerComponentsProps";
+import { ISellerCardProps } from "../../../models/seller-models/ISellerComponentsProps";
+import StyledCard from "./styled";
 import { Card } from "react-bootstrap";
 
 const SellerCard: React.FC<ISellerCardProps> = ({
@@ -9,9 +10,8 @@ const SellerCard: React.FC<ISellerCardProps> = ({
 }) => {
   return (
     <>
-      <Card title={`Seller ${seller.id} - ${seller.name}`} >
-        
-      </Card>
+      <StyledCard title={`Seller ${seller.id} - ${seller.name}`} >
+      </StyledCard>
     </>
   );
 };

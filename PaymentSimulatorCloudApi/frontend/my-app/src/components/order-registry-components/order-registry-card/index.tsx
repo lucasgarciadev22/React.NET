@@ -1,5 +1,5 @@
 import React from "react";
-import { IOrderRegistryCardPorps } from "../../models/order-registry-models/IOrderRegistryComponentsProps";
+import { IOrderRegistryCardPorps } from "../../../models/order-registry-models/IOrderRegistryComponentsProps";
 
 const OrderRegistryCard: React.FC<IOrderRegistryCardPorps> = ({
   order,
