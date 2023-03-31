@@ -1,5 +1,5 @@
 import React from "react";
-import { ISellersListProps } from "./../../models/SellerModels/ISellerComponentsProps";
+import { ISellersListProps } from "../../models/seller-models/ISellerComponentsProps";
 
 const SellersList: React.FC<ISellersListProps> = ({
   sellers,

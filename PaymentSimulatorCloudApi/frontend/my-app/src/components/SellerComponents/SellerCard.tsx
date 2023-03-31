@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import { ISellerCardProps } from "./../../models/SellerModels/ISellerComponentsProps";
 
 const SellerCard: React.FC<ISellerCardProps> = ({
   seller,

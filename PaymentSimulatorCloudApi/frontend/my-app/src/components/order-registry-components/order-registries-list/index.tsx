@@ -1,5 +1,5 @@
 import React from "react";
-import { IOrderRegistriesListProps } from "../../models/OrderRegistryModels/IOrderRegistryComponentsProps";
+import { IOrderRegistriesListProps } from "../../../models/order-registry-models/IOrderRegistryComponentsProps";
 
 const OrderRegistriesList: React.FC<IOrderRegistriesListProps> = ({
   orders,
