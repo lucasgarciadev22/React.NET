@@ -1,5 +1,5 @@
 import React from "react";
-import { IOrderRegistryFormProps } from "../../models/OrderRegistryModels/IOrderRegistryComponentsProps";
+import { IOrderRegistryFormProps } from "../../models/order-registry-models/IOrderRegistryComponentsProps";
 
 const OrderRegistryForm: React.FC<IOrderRegistryFormProps> = ({
   selectedOrder,
