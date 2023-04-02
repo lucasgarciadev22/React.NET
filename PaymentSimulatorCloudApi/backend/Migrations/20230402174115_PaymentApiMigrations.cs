@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace tech_test_payment_api.Migrations
 {
-    public partial class PaymentDBMigrations : Migration
+    public partial class PaymentApiMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

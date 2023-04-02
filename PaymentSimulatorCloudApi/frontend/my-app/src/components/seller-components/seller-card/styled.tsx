@@ -1,13 +1,12 @@
-import { Card } from "react-bootstrap";
+import {Card, NavLink } from "react-bootstrap";
 import styled from "styled-components";
 
 export const CardMain = styled(Card)`
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.295);
   padding: 16px;
-  width: 300px;
-  height: 250px;
+  min-width: 300px;
 `;
 
 export const Header = styled(Card.Header)`
@@ -52,5 +51,23 @@ export const Highlight = styled.span`
   font-size: 1rem;
   margin: 8px;
   padding: 8px 14px;
-  border-radius: 100%;
+  border-radius: 8px;
 `;
+
+export const StyledNavLink = styled(NavLink)`
+padding:16px;
+text-decoration: none;
+color: #333;
+
+&&&:hover {
+  color: #007bff;
+  text-decoration: none;
+}
+
+&&&.active {
+  color: #007bff;
+  font-weight: bold;
+}
+`;
+
+

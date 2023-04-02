@@ -23,8 +23,8 @@ const SellerLogTile: React.FC<ISellerLogTileProps> = ({
   return (
     <S.LogTile>
       <S.LogTitle>{renderActionType(sellerLog.actionType)}</S.LogTitle>
-      <S.LogDescription>{sellerLog.name}</S.LogDescription>
-      <S.LogDescription>{sellerLog.sellerJson}</S.LogDescription>
+      <S.LogTitle>Seller: {sellerLog.name}</S.LogTitle>
+      <S.LogDescription>JSON: {sellerLog.sellerJson}</S.LogDescription>
     </S.LogTile>
   );
 };

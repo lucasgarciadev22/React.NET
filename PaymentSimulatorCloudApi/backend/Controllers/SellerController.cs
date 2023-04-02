@@ -1,5 +1,6 @@
 using Azure.Data.Tables;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tech_test_payment_api.Context;
 using tech_test_payment_api.Models;
 using tech_test_payment_api.Models.Helpers;
@@ -63,10 +64,11 @@ namespace tech_test_payment_api.Controllers
     /// <remarks>
     /// Example of request:
     ///
-    /// GET /Sellers
+    /// GET /sellers
     /// </remarks>
     /// <response code="200">Returns a list of all sellers</response>
     [HttpGet]
+    [Route("Sellers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetSellers()
     {
@@ -98,7 +100,7 @@ namespace tech_test_payment_api.Controllers
 
       if (logs.Count == 0)
       {
-        return NotFound();
+        return NotFound("No logs found for this seller...");
       }
 
       return Ok(logs);
@@ -128,6 +130,31 @@ namespace tech_test_payment_api.Controllers
       if (seller == null)
       {
         return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
+      }
+      return Ok(seller);
+    }
+
+    /// <summary>
+    /// Searches for a seller based on the provided CPF.
+    /// </summary>
+    /// <param name="cpf"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Example of request (mandatory parameters):
+    ///
+    /// GET /Seller/Cpf/11511223548
+    /// </remarks>
+    /// <response code="200">If the request returns a seller</response>
+    /// <response code="404">If the seller is not found</response>
+    [HttpGet("Cpf/{cpf}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSellerByCpf(string cpf)
+    {
+      Seller? seller = await _context.Sellers.FirstOrDefaultAsync(s => s.Cpf == cpf);
+      if (seller == null)
+      {
+        return NotFound(StatusMessage.ShowErrorMessage(ClassType.Seller, $"{cpf}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
       return Ok(seller);
     }

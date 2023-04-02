@@ -13,8 +13,8 @@ namespace tech_test_payment_api.Models
     public string RowKey { get; set; }
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
-    public int Id { get; }
-    public string Name { get; }
+    public int Id { get; set;}
+    public string Name { get; set;}
 
     public SellerLog() { }
     public SellerLog(Seller seller, ActionType actionType, string partitionKey, string rowKey)

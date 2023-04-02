@@ -5,6 +5,7 @@ import OrderRegistryView from "./views/OrderRegistryView";
 import SellerView from './views/SellerView';
 import OrderRegistryFormWrapper from "./components/order-registry-components/OrderRegistryFormWrapper";
 import SellerFormWrapper from "./components/seller-components/SellerFormWrapper";
+import SellerLogsWrapper from './components/seller-components/SellerLogsWrapper';
 
 
 const App: React.FC = () => {
@@ -15,8 +16,8 @@ const App: React.FC = () => {
       <Route path="/orders/detail/:id" element={<OrderRegistryFormWrapper/>}/>
       <Route path="/sellers/*" element={<SellerView/>}/>
       <Route path="/sellers/detail/:id" element={<SellerFormWrapper/>}/>
-      <Route path="/" element={<Dashboard/>}/>
-      <Route path="/" element={<Dashboard/>}/>
+      <Route path="/sellers/sellerlogs/:id" element={<SellerLogsWrapper/>}/>
+      <Route path="/orders/orderlogs/id" element={<Dashboard/>}/>
     </Routes>
   );
 };

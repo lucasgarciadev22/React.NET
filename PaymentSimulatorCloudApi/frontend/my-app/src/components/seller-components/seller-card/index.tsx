@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 import { ISellerCardProps } from "../../../models/seller-models/ISellerComponentsProps";
 import * as S from "./styled";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
-import SellerLogTile from "../seller-log-tile";
+import { GlobalButton } from "../../global/GlobalComponents";
 
 const SellerCard: React.FC<ISellerCardProps> = ({
   seller,
   editSeller,
   handleModalConfirm,
-  sellerLogs,
 }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   return (
     <>
       <S.CardMain>
@@ -31,22 +27,20 @@ const SellerCard: React.FC<ISellerCardProps> = ({
             <p>{seller.phone}</p>
           </div>
         </S.Body>
-        <div className="d-flex justify-content-end pt-2 m-0 border-top">
-          <Button onClick={() => editSeller(seller.id)}>Edit</Button>
-          <Button onClick={() => handleModalConfirm(seller.id)}>Delete</Button>
-          <DropdownButton
-            id={`dropdown-${seller.id}`}
-            title="Logs"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            show={isDropdownOpen}
+        <div className="d-flex justify-content-center">
+          <GlobalButton variant="primary" onClick={() => editSeller(seller.id)}>
+            Edit
+          </GlobalButton>
+          <GlobalButton
+            variant="danger"
+            onClick={() => handleModalConfirm(seller.id)}
           >
-            {sellerLogs.map((log) => (
-              <Dropdown.Item key={log.id}>
-                <SellerLogTile key={log.id} sellerLog={log} />
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
+            Delete
+          </GlobalButton>
         </div>
+        <S.StyledNavLink href={`/sellers/sellerlogs/${seller.id}`}>
+          Show Logs
+        </S.StyledNavLink>
       </S.CardMain>
     </>
   );

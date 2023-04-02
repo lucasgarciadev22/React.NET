@@ -3,7 +3,6 @@ import { ISellerLog } from "./ISellerLog";
 
 export interface ISellerCardProps {
   seller: ISeller;
-  sellerLogs: ISellerLog[];
   editSeller: (id: number) => void;
   handleModalConfirm: (id: number) => void;
 }
@@ -17,11 +16,14 @@ export interface ISellerFormProps {
 
 export interface ISellersListProps {
   sellers: ISeller[];
-  sellersLogs: ISellerLog[];
   editSeller: (id: number) => void;
   handleModalConfirm: (id: number) => void;
 }
 
 export interface ISellerLogTileProps{
   sellerLog:ISellerLog;
+}
+
+export interface ISellerLogsListProps{
+  sellerLogs:ISellerLog[];
 }

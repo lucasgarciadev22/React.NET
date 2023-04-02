@@ -58,7 +58,7 @@ namespace tech_test_payment_api.Controllers
       }
       if (registeredSeller.Cpf != orderRegistry.SellerCpf)
       {
-        return BadRequest("Seller's Registration number is wrong, try again.");
+        return BadRequest("Seller's CPF number is wrong, try again.");
       }
       orderRegistry.StatusMessage = StatusMessage.ShowStatusMessage(OrderStatus.Awaiting);
       if (orderRegistry.OrderProductsJson == string.Empty || orderRegistry.OrderProducts == null)
@@ -114,11 +114,57 @@ namespace tech_test_payment_api.Controllers
     /// </remarks>
     /// <response code="200">Returns a list of all purchase orders</response>
     [HttpGet]
+    [Route("OrderRegistries")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetAllOrders()
     {
       List<OrderRegistry> orders = _context.OrderRegistries.ToList();
       return Ok(orders);
+    }
+
+    /// <summary>
+    /// Fetches all registered purchase orders from a specified seller.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>A list of all purchase orders based on seller's id</returns>
+    /// <remarks>
+    /// Request example:
+    /// 
+    ///     GET /api/orders/seller/id
+    ///     
+    /// </remarks>
+    /// <response code="200">Returns a list of all purchase orders from specified seller</response>
+    [HttpGet("SellerId/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetAllOrdersFromSeller(int id)
+    {
+      List<OrderRegistry> orders = _context.OrderRegistries.Where(o => o.SellerId == id).ToList();
+
+      if (!orders.Any())
+      {
+        return NotFound($"No orders found for seller with id {id}.");
+      }
+      return Ok(orders);
+    }
+
+    /// <summary>
+    /// Fetches all order registry logs with the specified partitionkey based on a seller's .
+    /// </summary>
+    /// <param name="cpf"></param>
+    /// <returns>A list of all order registry logs for the seller</returns>
+    /// <remarks>
+    /// Request example:
+    ///
+    /// GET /api/orderregistrylogs?cpf=12345678901
+    ///
+    /// </remarks>
+    /// <response code="200">Returns a list of all order registry logs for the seller</response>
+    [HttpGet("OrderRegistryLogs/{cpf}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetSellerLogs(string cpf)
+    {
+      var logs = _tableClient.Query<OrderRegistryLog>().Where(l => l.PartitionKey == cpf).ToList();
+      return Ok(logs);
     }
 
     /// <summary>

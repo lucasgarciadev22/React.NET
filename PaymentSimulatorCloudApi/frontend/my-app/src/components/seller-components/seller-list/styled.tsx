@@ -1,7 +1,7 @@
-import React from 'react'
+import styled from "styled-components";
 
-export default function styled() {
-  return (
-    <div>styled</div>
-  )
-}
+export const ListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+`;
