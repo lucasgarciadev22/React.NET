@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SellerForm from "./SellerForm";
-import { ISeller } from "../../models/SellerModels/ISeller";
 import api from "./../../api/PaymentApi";
+import { ISeller } from "../../models/seller-models/ISeller";
+import SellerForm from "../seller-components/seller-form";
 
 const SellerFormWrapper: React.FC = () => {
   const { id } = useParams<{ id: string }>(); //get route params

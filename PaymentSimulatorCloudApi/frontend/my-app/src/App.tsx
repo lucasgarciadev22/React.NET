@@ -3,10 +3,9 @@ import "./App.css";
 import Dashboard from "./views/Dashboard";
 import OrderRegistryView from "./views/OrderRegistryView";
 import SellerView from './views/SellerView';
-import SellerForm from './components/SellerComponents/SellerForm';
-import OrderRegistryForm from './components/OrderRegistryComponents/OrderRegistryForm';
-import OrderRegistryFormWrapper from './components/OrderRegistryComponents/OrderRegistryFormWrapper';
-import SellerFormWrapper from './components/SellerComponents/SellerFormWrapper';
+import OrderRegistryFormWrapper from "./components/order-registry-components/OrderRegistryFormWrapper";
+import SellerFormWrapper from "./components/seller-components/SellerFormWrapper";
+
 
 const App: React.FC = () => {
   return (

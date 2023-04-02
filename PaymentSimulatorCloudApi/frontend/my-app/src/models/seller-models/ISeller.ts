@@ -4,4 +4,5 @@ export interface ISeller {
   name: string;
   email: string;
   phone: string;
+  orderCount:number;
 }
