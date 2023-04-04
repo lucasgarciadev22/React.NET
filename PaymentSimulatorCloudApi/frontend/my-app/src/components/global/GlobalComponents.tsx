@@ -21,3 +21,15 @@ export const GlobalButton = styled(Button)`
     color: #fff;
   }
 `;
+export const GlobalWrapper= styled.div`
+margin:16px;
+padding:8px;
+`;
+
+export const GlobalButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap:24px;
+  padding: 8px;
+`;
+

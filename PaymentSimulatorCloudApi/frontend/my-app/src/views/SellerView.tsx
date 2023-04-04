@@ -13,7 +13,7 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import SellerForm from "../components/seller-components/seller-form";
-import { GlobalButton } from "../components/global/GlobalComponents";
+import { GlobalButton,GlobalWrapper } from "../components/global/GlobalComponents";
 
 const initialSeller: ISeller = {
   id: 0,
@@ -100,65 +100,72 @@ const SellerView: React.FC = () => {
 
   return (
     <>
-      <Button variant="outline-success" onClick={handleShowForm}>
-        <i className="i fas fa-plus me-2"></i>
-        New Activity
-      </Button>
-      <InputGroup className="mb-3" style={{ marginTop: "16px" }}>
-        <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
-        <Form.Control
-          placeholder="Search clients by name..."
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-        />
-      </InputGroup>
-      <div>
-        <h1>Registered sellers in Azure Cloud</h1>
-      </div>
-      <SellersList
-        editSeller={edit}
-        handleModalConfirm={handleModal}
-        sellers={fetchedSellers}
-      />
-      <Modal show={showForm} onHide={handleCloseForm}>
-        <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: "24px" }}>
-            Seller {seller.id === 0 ? "" : seller.id}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <SellerForm
-            addSeller={addSeller}
-            updateSeller={updateSeller}
-            cancelSeller={cancel}
-            selectedSeller={seller}
+      <GlobalWrapper>
+        <Button variant="outline-success" onClick={handleShowForm}>
+          <i className="i fas fa-plus me-2"></i>
+          New Activity
+        </Button>
+        <InputGroup className="mb-3" style={{ marginTop: "16px" }}>
+          <InputGroup.Text id="inputGroup-sizing-default">
+            Search
+          </InputGroup.Text>
+          <Form.Control
+            placeholder="Search clients by name..."
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
           />
-        </Modal.Body>
-        <Modal.Footer>
-          <p>Create or edit your seller registries...</p>
-        </Modal.Footer>
-      </Modal>
-      <Modal size="sm" show={showConfirm} onHide={handleCloseConfirm}>
-        <ModalHeader closeButton>
-          <ModalTitle style={{ fontSize: "24px" }}>
-            Removing Seller {seller.id === 0 ? "" : seller.id}
-          </ModalTitle>
-        </ModalHeader>
-        <ModalBody>Are you sure you wanna remove "{seller.name}"?</ModalBody>
-        <ModalFooter>
-          <GlobalButton
-            variant="danger"
-            onClick={() => deleteSeller(seller.id)}
-          >
-            <i className="fa-solid fa-check me-2"></i>
-            Confirm
-          </GlobalButton>
-          <GlobalButton variant="primary" onClick={() => handleCloseConfirm()}>
-            <i className="fa-solid fa-ban me-2"></i>
-            Cancel
-          </GlobalButton>
-        </ModalFooter>
-      </Modal>
+        </InputGroup>
+        <div>
+          <h1>Registered sellers in Azure Cloud</h1>
+        </div>
+        <SellersList
+          editSeller={edit}
+          handleModalConfirm={handleModal}
+          sellers={fetchedSellers}
+        />
+        <Modal show={showForm} onHide={handleCloseForm} fade={false}>
+          <Modal.Header closeButton>
+            <Modal.Title style={{ fontSize: "24px" }}>
+              Seller {seller.id === 0 ? "" : seller.id}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <SellerForm
+              addSeller={addSeller}
+              updateSeller={updateSeller}
+              cancelSeller={cancel}
+              selectedSeller={seller}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <p>Create or edit your seller registries...</p>
+          </Modal.Footer>
+        </Modal>
+        <Modal size="sm" show={showConfirm} onHide={handleCloseConfirm}>
+          <ModalHeader closeButton>
+            <ModalTitle style={{ fontSize: "24px" }}>
+              Removing Seller {seller.id === 0 ? "" : seller.id}
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>Are you sure you wanna remove "{seller.name}"?</ModalBody>
+          <ModalFooter>
+            <GlobalButton
+              variant="danger"
+              onClick={() => deleteSeller(seller.id)}
+            >
+              <i className="fa-solid fa-check me-2"></i>
+              Confirm
+            </GlobalButton>
+            <GlobalButton
+              variant="primary"
+              onClick={() => handleCloseConfirm()}
+            >
+              <i className="fa-solid fa-ban me-2"></i>
+              Cancel
+            </GlobalButton>
+          </ModalFooter>
+        </Modal>
+      </GlobalWrapper>
     </>
   );
 };
