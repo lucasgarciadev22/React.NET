@@ -11,6 +11,7 @@ namespace tech_test_payment_api.Models
     public string Email { get; set; }
     public string Phone { get; set; }
 
+    public Seller() { }
     public Seller(int id, string cpf, string name, string email, string phone)
     {
       Id = id;

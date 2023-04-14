@@ -14,15 +14,15 @@ namespace tech_test_payment_api.Models
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
     public OrderRegistryLog() { }
-    public OrderRegistryLog(OrderRegistry orderRegistry, ActionType actionType,string partitionKey, string rowKey)
-    { 
+    public OrderRegistryLog(OrderRegistry orderRegistry, ActionType actionType, string partitionKey, string rowKey)
+    {
       base.Id = orderRegistry.Id;
       base.OrderDate = orderRegistry.OrderDate;
       base.SellerCpf = orderRegistry.SellerCpf;
       ActionType = actionType;
       OrderRegistryJson = JsonSerializer.Serialize(orderRegistry);
       PartitionKey = partitionKey;
-      RowKey= rowKey;
+      RowKey = rowKey;
     }
   }
 }

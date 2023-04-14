@@ -8,6 +8,7 @@ const SellerCard: React.FC<ISellerCardProps> = ({
   editSeller,
   handleModalConfirm,
 }) => {
+
   return (
     <>
       <S.CardMain>

@@ -1,3 +1,5 @@
+using tech_test_payment_api.Models.Enums;
+
 namespace tech_test_payment_api.Models
 {
   public class OrderProduct
@@ -6,7 +8,7 @@ namespace tech_test_payment_api.Models
 
     public decimal Price { get; set; }
 
-    public string Size { get; set; }
+    public ProductSize Size { get; set; }
 
     public float Weight { get; set; }
   }

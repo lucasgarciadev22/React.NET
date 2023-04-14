@@ -61,14 +61,16 @@ namespace tech_test_payment_api.Controllers
         return BadRequest("Seller's CPF number is wrong, try again.");
       }
       orderRegistry.StatusMessage = StatusMessage.ShowStatusMessage(OrderStatus.Awaiting);
-      if (orderRegistry.OrderProductsJson == string.Empty || orderRegistry.OrderProducts == null)
+      if (orderRegistry.OrderProductsJson == string.Empty)
       {
         return BadRequest("An order registry must have at least 1 product.");
       }
       if (registeredSeller != null)
       {
         _context.Entry(registeredSeller).State = EntityState.Detached;
-
+        string orderNumber = ContextHelper.GenerateOrderNumber();
+        orderRegistry.OrderNumber =ContextHelper.GenerateOrderNumber();
+        
         if (_context.Entry(registeredSeller).State == EntityState.Detached)
         {
           await _context.OrderRegistries.AddAsync(orderRegistry);
@@ -192,8 +194,6 @@ namespace tech_test_payment_api.Controllers
       {
         return NotFound(StatusMessage.ShowErrorMessage(ClassType.OrderRegistry, $"{id}", ContextHelper.GetCurrentCatalog(_context), ActionType.Get));
       }
-
-      orderRegistry.OrderProducts = JsonSerializer.Deserialize<OrderProduct[]>(orderRegistry.OrderProductsJson);
 
       return Ok(orderRegistry);
     }

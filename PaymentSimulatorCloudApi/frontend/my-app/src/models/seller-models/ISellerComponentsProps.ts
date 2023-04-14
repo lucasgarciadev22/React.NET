@@ -1,3 +1,4 @@
+import { IOrderRegistry } from "../order-registry-models/IOrderRegistry";
 import { ISeller } from "./ISeller";
 import { ISellerLog } from "./ISellerLog";
 
@@ -16,6 +17,7 @@ export interface ISellerFormProps {
 
 export interface ISellersListProps {
   sellers: ISeller[];
+  orders:IOrderRegistry[];
   editSeller: (id: number) => void;
   handleModalConfirm: (id: number) => void;
 }

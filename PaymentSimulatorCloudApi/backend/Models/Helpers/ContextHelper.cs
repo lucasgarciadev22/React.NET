@@ -29,5 +29,10 @@ namespace tech_test_payment_api.Models.Helpers
       return tableClient;
     }
 
+    public static string GenerateOrderNumber()
+    {
+      return Guid.NewGuid().ToString().Substring(0, 8);
+    }
+
   }
 }

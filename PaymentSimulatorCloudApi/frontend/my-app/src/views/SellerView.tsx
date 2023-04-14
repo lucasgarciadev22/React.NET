@@ -11,9 +11,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
+  NavLink,
 } from "react-bootstrap";
 import SellerForm from "../components/seller-components/seller-form";
-import { GlobalButton,GlobalWrapper } from "../components/global/GlobalComponents";
+import {
+  GlobalButton,
+  GlobalNavLink,
+  GlobalWrapper,
+} from "../components/global/GlobalComponents";
+import { IOrderRegistry } from "../models/order-registry-models/IOrderRegistry";
 
 const initialSeller: ISeller = {
   id: 0,
@@ -26,37 +32,56 @@ const initialSeller: ISeller = {
 
 const SellerView: React.FC = () => {
   const [fetchedSellers, setFetchedSellers] = useState<ISeller[]>([]);
+  const [fetchedOrders, setFetchedOrders] = useState<IOrderRegistry[]>([]);
   const [seller, setSeller] = useState<ISeller>(initialSeller);
   const [showForm, setShowForm] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //on render...
   useEffect(() => {
-    async function fetchSellers() {
-      const response = await api.get(`Seller/Sellers`);
-      setFetchedSellers(response.data);
-    }
-
-    fetchSellers();
-  }, [fetchedSellers.length]);
+    const fetchApiObjects = async () => {
+      const responseSeller = await api.get("Seller/Sellers");
+      const responseOrder = await api.get("OrderRegistry/OrderRegistries");
+      console.log("responseSeller:", responseSeller);
+      console.log("responseOrder:", responseOrder);
+      if (responseOrder != undefined && responseSeller != undefined) {
+        setFetchedSellers(responseSeller.data);
+        setFetchedOrders(responseOrder.data);
+        setIsLoading(false);
+      }
+    };
+    fetchApiObjects();
+  }, [fetchedSellers.length, fetchedOrders.length, seller]);
 
   //#region API Routes Methods
   const addSeller = async (seller: ISeller) => {
     const response = await api.post("Seller", seller);
-    setFetchedSellers([...fetchedSellers, response.data]);
-    handleCloseForm();
+    if (response != undefined) {
+      setFetchedSellers([...fetchedSellers, response.data]);
+      setIsLoading(false);
+    }
+
+    handleCloseConfirm();
   };
 
-  const updateSeller = async (seller: ISeller) => {
-    const response = await api.put(`Seller${seller.id}`, seller);
-    setFetchedSellers(
-      fetchedSellers.map((item) =>
-        item.id === seller.id ? response.data : item
-      )
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    setSeller(initialSeller);
-    handleCloseForm();
+  const updateSeller = async (seller: ISeller) => {
+    const response = await api.put(`Seller/${seller.id}`, seller);
+
+    if (response != undefined) {
+      setFetchedSellers(
+        fetchedSellers.map((item) =>
+          item.id === seller.id ? response.data : item
+        )
+      );
+      setIsLoading(false);
+    }
+    handleCloseConfirm();
   };
 
   const deleteSeller = async (id: number) => {
@@ -65,13 +90,26 @@ const SellerView: React.FC = () => {
         (seller) => seller.id !== id
       );
 
-      setFetchedSellers([...filteredSeller]);
+      if (filteredSeller != undefined) {
+        setFetchedSellers([...filteredSeller]);
+        setIsLoading(false);
+      }
       handleCloseConfirm();
     }
   };
   //#endregion
 
   //#region Event Handlers
+  const filteredSellers = fetchedSellers.filter(
+    (seller) =>
+      seller.name &&
+      seller.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   const edit = (id: number) => {
     const selectedSeller = fetchedSellers.filter((seller) => seller.id === id);
     setSeller(selectedSeller[0]);
@@ -80,10 +118,10 @@ const SellerView: React.FC = () => {
 
   const cancel = () => {
     setSeller(initialSeller);
-    handleCloseForm();
+    handleCloseConfirm();
   };
 
-  const handleModal = (id: number) => {
+  const handleShowModal = (id: number) => {
     const selectedSeller = fetchedSellers.filter((seller) => seller.id === id);
     setSeller(selectedSeller[0]);
     setShowConfirm(true);
@@ -92,18 +130,23 @@ const SellerView: React.FC = () => {
   const handleCloseConfirm = () => {
     setSeller(initialSeller);
     setShowConfirm(false);
+    setShowForm(false);
+  };
+
+  const handleShowFormClean = () => {
+    setSeller(initialSeller);
+    setShowForm(true);
   };
 
   const handleCloseForm = () => setShowForm(false);
   const handleShowForm = () => setShowForm(true);
   //#endregion
-
   return (
     <>
       <GlobalWrapper>
-        <Button variant="outline-success" onClick={handleShowForm}>
+        <Button variant="outline-success" onClick={handleShowFormClean}>
           <i className="i fas fa-plus me-2"></i>
-          New Activity
+          New Seller
         </Button>
         <InputGroup className="mb-3" style={{ marginTop: "16px" }}>
           <InputGroup.Text id="inputGroup-sizing-default">
@@ -113,6 +156,8 @@ const SellerView: React.FC = () => {
             placeholder="Search clients by name..."
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
+            value={searchTerm}
+            onChange={handleSearch}
           />
         </InputGroup>
         <div>
@@ -120,10 +165,11 @@ const SellerView: React.FC = () => {
         </div>
         <SellersList
           editSeller={edit}
-          handleModalConfirm={handleModal}
-          sellers={fetchedSellers}
+          orders={fetchedOrders}
+          handleModalConfirm={handleShowModal}
+          sellers={filteredSellers}
         />
-        <Modal show={showForm} onHide={handleCloseForm} fade={false}>
+        <Modal show={showForm} onHide={handleCloseForm}>
           <Modal.Header closeButton>
             <Modal.Title style={{ fontSize: "24px" }}>
               Seller {seller.id === 0 ? "" : seller.id}
@@ -150,21 +196,26 @@ const SellerView: React.FC = () => {
           <ModalBody>Are you sure you wanna remove "{seller.name}"?</ModalBody>
           <ModalFooter>
             <GlobalButton
-              variant="danger"
-              onClick={() => deleteSeller(seller.id)}
-            >
-              <i className="fa-solid fa-check me-2"></i>
-              Confirm
-            </GlobalButton>
-            <GlobalButton
               variant="primary"
               onClick={() => handleCloseConfirm()}
             >
               <i className="fa-solid fa-ban me-2"></i>
               Cancel
             </GlobalButton>
+            <GlobalButton
+              variant="danger"
+              onClick={() => deleteSeller(seller.id)}
+            >
+              <i className="fa-solid fa-check me-2"></i>
+              Confirm
+            </GlobalButton>
           </ModalFooter>
         </Modal>
+        <br />
+        <br />
+        <GlobalNavLink href={"/"}>
+          Back to Dashboard
+        </GlobalNavLink>
       </GlobalWrapper>
     </>
   );

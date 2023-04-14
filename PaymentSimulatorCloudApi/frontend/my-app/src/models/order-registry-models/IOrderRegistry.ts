@@ -7,14 +7,45 @@ export interface IOrderRegistry {
   orderDate: Date;
   orderStatus: OrderStatus;
   orderProducts:IOrderProduct[];
+}
+
+export interface IOrderRegistryRequest {
+  id:number;
+  statusMessage: string;
+  orderNumber: string;
+  orderDate: Date; // no formato ISO-8601
+  orderStatus: OrderStatus;
+  orderProducts: IOrderProduct[];
   orderProductsJson:string;
+  sellerId: number;
+  sellerCpf: string;
+  sellerName: string;
+  sellerEmail: string;
+  sellerPhone: string;
+}
+
+export interface IOrderRegistryDto {
+  id:number;
+  statusMessage: string;
+  orderNumber: string;
+  orderDate: Date; // no formato ISO-8601
+  orderStatus: OrderStatus;
+  orderProducts: IOrderProduct[];
+  seller:ISeller;
 }
 
 export interface IOrderProduct {
   name: string;
   price: number;
-  size: string;
-  wight: number;
+  size: Sizes;
+  weight: number;
+}
+
+export enum Sizes{
+  S,
+  M,
+  L,
+  XL,
 }
 
 export enum OrderStatus {

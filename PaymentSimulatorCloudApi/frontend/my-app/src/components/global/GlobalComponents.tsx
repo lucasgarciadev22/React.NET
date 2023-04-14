@@ -1,5 +1,11 @@
-import { Button } from "react-bootstrap";
+import { Button, NavLink } from "react-bootstrap";
 import styled from "styled-components";
+
+export const ListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+`;
 
 export const GlobalButton = styled(Button)`
   &&& {
@@ -7,7 +13,7 @@ export const GlobalButton = styled(Button)`
     border-radius: 8px;
     margin: 16px;
     cursor: pointer;
-    font-size:16px;
+    font-size: 16px;
     background-color: ${(props) =>
       props.variant === "primary" ? "transparent" : "transparent"};
     color: ${(props) => (props.variant === "primary" ? "#007bff" : "#dc3545")};
@@ -21,15 +27,20 @@ export const GlobalButton = styled(Button)`
     color: #fff;
   }
 `;
-export const GlobalWrapper= styled.div`
-margin:16px;
-padding:8px;
+export const GlobalWrapper = styled.div`
+  margin: 16px;
+  padding: 8px;
 `;
 
 export const GlobalButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  gap:24px;
+  gap: 24px;
   padding: 8px;
 `;
 
+export const GlobalNavLink = styled(NavLink)`
+  padding: 16px;
+  text-decoration: none;
+  color: #333;
+`;

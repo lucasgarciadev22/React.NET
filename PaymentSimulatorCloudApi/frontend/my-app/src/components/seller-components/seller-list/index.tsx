@@ -2,38 +2,40 @@ import React, { useEffect, useState } from "react";
 import { ISellersListProps } from "../../../models/seller-models/ISellerComponentsProps";
 import SellerCard from "../seller-card";
 import * as S from "./styled";
-import { IOrderRegistry } from "../../../models/order-registry-models/IOrderRegistry";
-import api from "../../../api/PaymentApi";
 import { ISeller } from "../../../models/seller-models/ISeller";
+import { ListWrapper } from "../../global/GlobalComponents";
 
 const SellersList: React.FC<ISellersListProps> = ({
   sellers,
+  orders,
   editSeller,
   handleModalConfirm,
 }: ISellersListProps) => {
-  const [sellerOrders, setSellerOrders] = useState<IOrderRegistry[]>();
-  useEffect(() => {
-    const fetchSeller = async (seller: ISeller) => {
-      try {
-        const response = await api.get(`OrderRegistry/SellerId/${seller.id}`);
-        const fetchedOrders: IOrderRegistry[] = response.data;
-        setSellerOrders(fetchedOrders);
-        if (sellerOrders != undefined) {
-          seller.orderCount = sellerOrders.length;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const [updatedSellers, setUpdatedSellers] = useState<ISeller[]>([]);
 
-    sellers.forEach((seller) => fetchSeller(seller));
-  }, [sellers]);
+  useEffect(() => {
+    const calculateOrderCount = (seller: ISeller) => {
+      if (!orders || !seller) return; // handle undefined values
+      const sellerOrders = orders.filter(
+        (order) => order.seller?.id === seller.id
+      );
+      return { // return new seller object with updated ordercount prop
+        ...seller,
+        orderCount: sellerOrders?.length ?? 0,
+      };
+    };
+    const updatedSellers = sellers
+      .map((seller) => calculateOrderCount(seller))
+      .filter((seller) => seller !== undefined) as ISeller[];
+
+    setUpdatedSellers(updatedSellers);
+  }, [sellers, orders]);
 
   return (
     <>
-      <S.ListWrapper>
-        {sellers.length > 0 &&
-          sellers.map((seller) => (
+      <ListWrapper>
+        {updatedSellers.length > 0 &&
+          updatedSellers.map((seller) => (
             <SellerCard
               key={seller.id}
               seller={seller}
@@ -41,7 +43,7 @@ const SellersList: React.FC<ISellersListProps> = ({
               handleModalConfirm={handleModalConfirm}
             />
           ))}
-      </S.ListWrapper>
+      </ListWrapper>
     </>
   );
 };

@@ -1,7 +1,8 @@
-import React from 'react'
+import React from "react";
+import styled from "styled-components";
 
-export default function styled() {
-  return (
-    <div>styled</div>
-  )
-}
+export const CloseClickIcon = styled.span`
+  cursor: pointer;
+  color: #dc3545;
+  padding: 8px;
+`;

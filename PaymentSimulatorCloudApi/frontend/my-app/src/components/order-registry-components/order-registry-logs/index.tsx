@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-export default function index() {
-  return (
-    <div>index</div>
-  )
-}
+const OrderRegistriesLogs: React.FC = () => {
+  return <div>index</div>;
+};
+
+export default OrderRegistriesLogs;
