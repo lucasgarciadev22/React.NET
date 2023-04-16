@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import {
-  IOrderProduct,
-  IOrderRegistryRequest,
-  OrderStatus,
-  Sizes,
-} from "../../../models/order-registry-models/IOrderRegistry";
 import { IOrderRegistryFormProps } from "../../../models/order-registry-models/IOrderRegistryComponentsProps";
 import { GlobalButtonWrapper } from "../../global/GlobalComponents";
 import * as S from "./styled";
 import OrderProductForm from "../../order-product-components/order-product-form";
+import {
+  IOrderProduct,
+  Sizes,
+} from "../../../models/order-product-models/IOrderProduct";
+import {
+  IOrderRegistryRequest,
+  OrderStatus,
+} from "../../../models/order-registry-models/IOrderRegistry";
 
 const OrderRegistryForm: React.FC<IOrderRegistryFormProps> = ({
   selectedOrder,

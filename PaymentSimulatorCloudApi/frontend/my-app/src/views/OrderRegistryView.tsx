@@ -15,16 +15,17 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import api from "../api/PaymentApi";
-import {
-  IOrderProduct,
-  IOrderRegistry,
-  IOrderRegistryRequest,
-  OrderStatus,
-  Sizes,
-} from "../models/order-registry-models/IOrderRegistry";
 import { ISeller } from "../models/seller-models/ISeller";
 import OrderRegistryForm from "./../components/order-registry-components/order-registry-form/index";
 import OrderRegistriesList from "../components/order-registry-components/order-registries-list";
+import {
+  IOrderProduct,
+  Sizes,
+} from "../models/order-product-models/IOrderProduct";
+import {
+  IOrderRegistryRequest,
+  OrderStatus,
+} from "../models/order-registry-models/IOrderRegistry";
 
 const OrderRegistryView: React.FC = () => {
   const initialProduct: IOrderProduct = {

@@ -150,7 +150,7 @@ namespace tech_test_payment_api.Controllers
     }
 
     /// <summary>
-    /// Fetches all order registry logs with the specified partitionkey based on a seller's .
+    /// Fetches all order registry logs with the specified partitionkey based on a seller's cpf.
     /// </summary>
     /// <param name="cpf"></param>
     /// <returns>A list of all order registry logs for the seller</returns>

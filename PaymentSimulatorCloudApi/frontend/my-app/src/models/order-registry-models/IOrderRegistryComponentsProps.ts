@@ -1,5 +1,6 @@
+import { IOrderProduct } from "../order-product-models/IOrderProduct";
 import { ISeller } from "../seller-models/ISeller";
-import { IOrderProduct, IOrderRegistry, IOrderRegistryRequest } from "./IOrderRegistry";
+import { IOrderRegistryRequest } from "./IOrderRegistry";
 import { IOrderRegistryLog } from "./IOrderRegistryLog";
 
 export interface IOrderRegistryCardPorps {

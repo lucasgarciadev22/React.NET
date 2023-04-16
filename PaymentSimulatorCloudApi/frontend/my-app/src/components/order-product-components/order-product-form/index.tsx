@@ -1,10 +1,7 @@
 import { Form, Button } from "react-bootstrap";
-import { IOrderProductFormProps } from "../../../models/order-registry-models/IOrderProductComponentsProps";
-import {
-  IOrderProduct,
-  Sizes,
-} from "../../../models/order-registry-models/IOrderRegistry";
 import { useState } from "react";
+import { IOrderProduct, Sizes } from "../../../models/order-product-models/IOrderProduct";
+import { IOrderProductFormProps } from "../../../models/order-product-models/IOrderProductComponentsProps";
 
 const OrderProductForm: React.FC<IOrderProductFormProps> = ({
   initialProduct,

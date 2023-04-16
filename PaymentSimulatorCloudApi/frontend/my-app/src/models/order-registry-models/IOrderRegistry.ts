@@ -1,3 +1,4 @@
+import { IOrderProduct } from '../order-product-models/IOrderProduct';
 import { ISeller } from '../seller-models/ISeller';
 export interface IOrderRegistry {
   id: number;
@@ -32,20 +33,6 @@ export interface IOrderRegistryDto {
   orderStatus: OrderStatus;
   orderProducts: IOrderProduct[];
   seller:ISeller;
-}
-
-export interface IOrderProduct {
-  name: string;
-  price: number;
-  size: Sizes;
-  weight: number;
-}
-
-export enum Sizes{
-  S,
-  M,
-  L,
-  XL,
 }
 
 export enum OrderStatus {

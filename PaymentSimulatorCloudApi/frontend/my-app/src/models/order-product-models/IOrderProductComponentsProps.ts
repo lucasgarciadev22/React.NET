@@ -1,4 +1,4 @@
-import { IOrderProduct } from "./IOrderRegistry";
+import { IOrderProduct } from "./IOrderProduct";
 
 export interface IOrderProductFormProps {
   initialProduct: IOrderProduct;
