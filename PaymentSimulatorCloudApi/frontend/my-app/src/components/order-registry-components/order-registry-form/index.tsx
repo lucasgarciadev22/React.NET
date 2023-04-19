@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Accordion } from "react-bootstrap";
 import { IOrderRegistryFormProps } from "../../../models/order-registry-models/IOrderRegistryComponentsProps";
 import { GlobalButtonWrapper } from "../../global/GlobalComponents";
 import * as S from "./styled";
@@ -18,12 +18,14 @@ const OrderRegistryForm: React.FC<IOrderRegistryFormProps> = ({
   addOrder,
   updateOrder,
   cancelOrder,
-  initialOrder,
   initialProduct,
+  initialOrder,
   sellers,
 }) => {
   const [order, setOrder] = useState<IOrderRegistryRequest>(currentOrder());
-  const [orderProducts, setOrderProducts] = useState<IOrderProduct[]>([]);
+  const [orderProducts, setOrderProducts] = useState<IOrderProduct[]>(
+    currentOrderProduct()
+  );
 
   function currentOrder(): IOrderRegistryRequest {
     if (selectedOrder.id !== 0) {
@@ -33,9 +35,24 @@ const OrderRegistryForm: React.FC<IOrderRegistryFormProps> = ({
     }
   }
 
+  function currentOrderProduct(): IOrderProduct[] {
+    if (
+      !selectedOrder ||
+      selectedOrder.id !== 0 ||
+      !selectedOrder.orderProductsJson
+    ) {
+      return [];
+    }
+
+    const orderProducts = JSON.parse(selectedOrder.orderProductsJson);
+    return orderProducts;
+  }
+
   useEffect(() => {
     if (selectedOrder.id !== 0) {
       setOrder(selectedOrder);
+      const orderProducts = JSON.parse(selectedOrder.orderProductsJson);
+      setOrderProducts(orderProducts);
     }
   }, [selectedOrder]);
 
@@ -143,25 +160,37 @@ const OrderRegistryForm: React.FC<IOrderRegistryFormProps> = ({
         </Form.Group>
         <hr />
         <Form.Group className="mb-3">
-          <h5>Order Products</h5>
-          <ul>
-            {orderProducts.map((orderProduct, index) => (
-              <li key={index}>
-                {orderProduct.name} - {orderProduct.price} -{" "}
-                {getSizeText(orderProduct.size)} - {orderProduct.weight}
-                <S.CloseClickIcon
-                  onClick={() => handleRemoveOrderProduct(index)}
-                >
-                  <i className="fa-solid fa-circle-xmark"></i>
-                </S.CloseClickIcon>
-              </li>
-            ))}
-          </ul>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Order Products</Accordion.Header>
+              <Accordion.Body>
+                <ul>
+                  {orderProducts.map((orderProduct, index) => (
+                    <li key={index}>
+                      {orderProduct.name} - {orderProduct.price} -{" "}
+                      {getSizeText(orderProduct.size)} - {orderProduct.weight}
+                      <S.CloseClickIcon
+                        onClick={() => handleRemoveOrderProduct(index)}
+                      >
+                        <i className="fa-solid fa-circle-xmark"></i>
+                      </S.CloseClickIcon>
+                    </li>
+                  ))}
+                </ul>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
         </Form.Group>
-        <OrderProductForm
-          handleOnAdd={handleOnAddOrderProduct}
-          initialProduct={initialProduct}
-        />
+        <div>
+          {order.id === 0 || orderProducts.length === 0 ? (
+            <OrderProductForm
+              handleOnAdd={handleOnAddOrderProduct}
+              initialProduct={initialProduct}
+            />
+          ) : (
+            ""
+          )}
+        </div>
         <GlobalButtonWrapper>
           <Button variant="outline-danger" onClick={handleButtonCancel}>
             Cancel

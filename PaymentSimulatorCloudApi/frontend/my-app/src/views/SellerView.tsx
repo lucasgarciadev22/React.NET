@@ -11,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-  NavLink,
 } from "react-bootstrap";
 import SellerForm from "../components/seller-components/seller-form";
 import {

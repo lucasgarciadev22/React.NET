@@ -1,7 +1,5 @@
-import React from 'react'
+import styled from "styled-components";
 
-export default function styled() {
-  return (
-    <div>styled</div>
-  )
-}
+export const FormWrapper= styled.div`
+margin-top: 16px;
+`;

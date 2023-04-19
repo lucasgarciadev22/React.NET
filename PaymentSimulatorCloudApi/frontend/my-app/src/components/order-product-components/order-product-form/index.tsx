@@ -1,7 +1,11 @@
 import { Form, Button } from "react-bootstrap";
 import { useState } from "react";
-import { IOrderProduct, Sizes } from "../../../models/order-product-models/IOrderProduct";
+import {
+  IOrderProduct,
+  Sizes,
+} from "../../../models/order-product-models/IOrderProduct";
 import { IOrderProductFormProps } from "../../../models/order-product-models/IOrderProductComponentsProps";
+import * as S from "./styled";
 
 const OrderProductForm: React.FC<IOrderProductFormProps> = ({
   initialProduct,
@@ -73,9 +77,11 @@ const OrderProductForm: React.FC<IOrderProductFormProps> = ({
         onChange={handleProductWeightChange}
         pattern="[0-9]+(\.[0-9]+)?"
       />
-      <Button variant="success" onClick={() => handleAddOrderProduct()}>
-        Add Product
-      </Button>
+      <S.FormWrapper>
+        <Button variant="success" onClick={() => handleAddOrderProduct()}>
+          Add Product
+        </Button>
+      </S.FormWrapper>
     </>
   );
 };

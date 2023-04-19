@@ -1,17 +1,16 @@
 import React from "react";
 import { IOrderRegistryCardPorps } from "../../../models/order-registry-models/IOrderRegistryComponentsProps";
 import * as S from "./styled";
-import { GlobalButton } from "../../global/GlobalComponents";
+import { GlobalButton, GlobalWrapper } from "../../global/GlobalComponents";
 const OrderRegistryCard: React.FC<IOrderRegistryCardPorps> = ({
   order,
-  statusImg,
   editOrder,
   handleModalConfirm,
 }: IOrderRegistryCardPorps) => {
   const displayDate =
     order.orderDate instanceof Date
-    ? order.orderDate.toLocaleDateString()
-    : new Date(Date.now()).toLocaleDateString();
+      ? order.orderDate.toLocaleDateString()
+      : new Date(Date.now()).toLocaleDateString();
 
   return (
     <>
@@ -20,17 +19,20 @@ const OrderRegistryCard: React.FC<IOrderRegistryCardPorps> = ({
           {order.id} - {order.orderNumber}
         </S.Header>
         <S.Body>
-          <div>
-            <S.Title>
-              Products:
-              <S.Highlight>{order.statusMessage}</S.Highlight>{" "}
-            </S.Title>
-            <S.Description>{displayDate}</S.Description>
-          </div>
-          <div>
-            <p>{order.sellerName}</p>
-            <p>{order.sellerCpf}</p>
-          </div>
+          <GlobalWrapper>
+            <div>
+              <S.Title>
+                Status:
+                <S.Highlight>{order.statusMessage}</S.Highlight>{" "}
+              </S.Title>
+              <S.Description>Last Updated: {displayDate}</S.Description>
+            </div>
+            <div>
+              <S.Title>Seller:</S.Title>
+              <p>{order.sellerName}</p>
+              <p>{order.sellerCpf}</p>
+            </div>
+          </GlobalWrapper>
         </S.Body>
         <div className="d-flex justify-content-center">
           <GlobalButton variant="primary" onClick={() => editOrder(order.id)}>

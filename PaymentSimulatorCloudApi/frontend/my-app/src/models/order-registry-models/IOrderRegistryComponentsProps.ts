@@ -5,18 +5,24 @@ import { IOrderRegistryLog } from "./IOrderRegistryLog";
 
 export interface IOrderRegistryCardPorps {
   order: IOrderRegistryRequest;
-  statusImg: string;
   editOrder: (id: number) => void;
   handleModalConfirm: (id: number) => void;
 }
 
+export interface IOrderRegistryViewProps {
+  filterId?: (id: number) => void;
+}
+
 export interface IOrderRegistryFormProps {
-  sellers:ISeller[];
-  initialOrder:IOrderRegistryRequest;
-  initialProduct:IOrderProduct;
+  sellers: ISeller[];
+  initialOrder: IOrderRegistryRequest;
+  initialProduct: IOrderProduct;
   selectedOrder: IOrderRegistryRequest;
-  addOrder: (order: IOrderRegistryRequest,products:IOrderProduct[]) => void;
-  updateOrder: (order: IOrderRegistryRequest, products:IOrderProduct[]) => void;
+  addOrder: (order: IOrderRegistryRequest, products: IOrderProduct[]) => void;
+  updateOrder: (
+    order: IOrderRegistryRequest,
+    products: IOrderProduct[]
+  ) => void;
   cancelOrder: () => void;
 }
 

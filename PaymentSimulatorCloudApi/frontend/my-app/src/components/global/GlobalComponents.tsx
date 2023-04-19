@@ -44,3 +44,11 @@ export const GlobalNavLink = styled(NavLink)`
   text-decoration: none;
   color: #333;
 `;
+
+export const GlobalToastContainer = styled.div`
+  position: fixed;
+  border-radius: 20px;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+`;

@@ -16,7 +16,6 @@ const OrderRegistriesList: React.FC<IOrderRegistriesListProps> = ({
             <OrderRegistryCard
               key={order.id}
               order={order}
-              statusImg=""
               editOrder={editOrder}
               handleModalConfirm={handleModalConfirm}
             />

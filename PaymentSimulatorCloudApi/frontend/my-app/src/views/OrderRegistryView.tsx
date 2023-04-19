@@ -1,7 +1,9 @@
+//#region Imports
 import React, { useEffect, useState } from "react";
 import {
   GlobalButton,
   GlobalNavLink,
+  GlobalToastContainer,
   GlobalWrapper,
 } from "../components/global/GlobalComponents";
 import {
@@ -26,15 +28,10 @@ import {
   IOrderRegistryRequest,
   OrderStatus,
 } from "../models/order-registry-models/IOrderRegistry";
-
+import { AxiosError } from "axios";
+import ErrorToast from "../components/global/error-toast";
+//#endregion
 const OrderRegistryView: React.FC = () => {
-  const initialProduct: IOrderProduct = {
-    name: "",
-    price: 0,
-    size: Sizes.S,
-    weight: 0,
-  };
-
   const initialSeller: ISeller = {
     id: 0,
     name: "",
@@ -42,6 +39,13 @@ const OrderRegistryView: React.FC = () => {
     email: "",
     orderCount: 0,
     phone: "",
+  };
+
+  const initialProduct: IOrderProduct = {
+    name: "",
+    price: 0,
+    size: Sizes.S,
+    weight: 0,
   };
 
   const initialOrder: IOrderRegistryRequest = {
@@ -68,7 +72,14 @@ const OrderRegistryView: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showError, setShowError] = useState(false);
 
+  const filteredOrders = fetchedOrders.filter(
+    (seller) =>
+      seller.orderNumber &&
+      seller.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   //on render...
   useEffect(() => {
     const fetchApiObjects = async () => {
@@ -96,13 +107,23 @@ const OrderRegistryView: React.FC = () => {
       orderProductsJson: JSON.stringify(products),
     };
 
-    const response = await api.post("OrderRegistry", orderWithProducts);
-    if (response) {
-      setFetchedOrders([...fetchedOrders, response.data]);
-      setIsLoading(false);
+    try {
+      const response = await api.post("OrderRegistry", orderWithProducts);
+      if (response) {
+        setFetchedOrders([...fetchedOrders, response.data]);
+        setIsLoading(false);
+      }
+      handleCloseConfirm();
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          setErrorMessage(error.response.data);
+        } else {
+          setErrorMessage(error.message);
+        }
+      }
+      console.log(errorMessage);
     }
-
-    handleCloseConfirm();
   };
 
   if (isLoading) {
@@ -149,11 +170,11 @@ const OrderRegistryView: React.FC = () => {
   //#endregion
 
   //#region Event Handlers
-  const filteredOrders = fetchedOrders.filter(
-    (seller) =>
-      seller.orderNumber &&
-      seller.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  const handleCloseError = () => {
+    setShowError(false);
+    setErrorMessage("");
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -194,6 +215,12 @@ const OrderRegistryView: React.FC = () => {
   return (
     <>
       <GlobalWrapper>
+          {errorMessage && (
+            <ErrorToast
+              errorMessage={errorMessage}
+              onClose={handleCloseError}
+            />
+          )}
         <Button variant="outline-success" onClick={handleShowFormClean}>
           <i className="i fas fa-plus me-2"></i>
           New Order

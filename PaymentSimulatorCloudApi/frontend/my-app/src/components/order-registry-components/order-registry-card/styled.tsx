@@ -6,7 +6,7 @@ export const CardMain = styled(Card)`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.295);
   padding: 16px;
-  min-width: 300px;
+  min-width: 400px;
 `;
 
 export const Header = styled(Card.Header)`

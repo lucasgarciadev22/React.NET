@@ -61,7 +61,8 @@ namespace tech_test_payment_api.Controllers
         return BadRequest("Seller's CPF number is wrong, try again.");
       }
       orderRegistry.StatusMessage = StatusMessage.ShowStatusMessage(OrderStatus.Awaiting);
-      if (orderRegistry.OrderProductsJson == string.Empty)
+      var orderProducts = JsonSerializer.Deserialize<List<OrderProduct>>(orderRegistry.OrderProductsJson);
+      if (orderProducts.Count == 0 || orderProducts == null)
       {
         return BadRequest("An order registry must have at least 1 product.");
       }
@@ -69,8 +70,8 @@ namespace tech_test_payment_api.Controllers
       {
         _context.Entry(registeredSeller).State = EntityState.Detached;
         string orderNumber = ContextHelper.GenerateOrderNumber();
-        orderRegistry.OrderNumber =ContextHelper.GenerateOrderNumber();
-        
+        orderRegistry.OrderNumber = ContextHelper.GenerateOrderNumber();
+
         if (_context.Entry(registeredSeller).State == EntityState.Detached)
         {
           await _context.OrderRegistries.AddAsync(orderRegistry);
@@ -221,7 +222,7 @@ namespace tech_test_payment_api.Controllers
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> EditOrderRegistry(int id, OrderStatus newStatus)
+    public async Task<IActionResult> EditOrderRegistry(int id, OrderRegistry order)
     {
       OrderRegistry? orderRegistryToEdit = await _context.OrderRegistries.FindAsync(id);
       if (orderRegistryToEdit == null)
@@ -235,13 +236,14 @@ namespace tech_test_payment_api.Controllers
         return BadRequest("Order was canceled.");
       }
 
-      orderRegistryToEdit.OrderStatus = VerifyNewStatus(orderRegistryToEdit.OrderStatus, newStatus);
+      orderRegistryToEdit.OrderStatus = VerifyNewStatus(orderRegistryToEdit.OrderStatus, order.OrderStatus);
 
       if (orderRegistryToEdit.OrderStatus == OrderStatus.NotAllowed)
       {
         return BadRequest("Couldn't change the status of this order, please check the status changing rules.");
       }
       orderRegistryToEdit.StatusMessage = StatusMessage.ShowStatusMessage(orderRegistryToEdit.OrderStatus);
+      orderRegistryToEdit.OrderDate = DateTime.SpecifyKind(orderRegistryToEdit.OrderDate, DateTimeKind.Utc);
 
       _context.OrderRegistries.Update(orderRegistryToEdit);
       await _context.SaveChangesAsync();
