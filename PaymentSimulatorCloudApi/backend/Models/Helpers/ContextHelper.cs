@@ -19,12 +19,12 @@ namespace tech_test_payment_api.Models.Helpers
       var builder = new SqlConnectionStringBuilder(connectionString);
       return builder.InitialCatalog;
     }
-    public static async Task<TableClient> GetAzureTableClientAsync(string tableName, string storageAccConnection)
+    public static TableClient GetAzureTableClient(string tableName, string storageAccConnection)
     {
       TableServiceClient serviceClient = new TableServiceClient(storageAccConnection);
       TableClient tableClient = serviceClient.GetTableClient(tableName);
 
-      await tableClient.CreateIfNotExistsAsync();
+      tableClient.CreateIfNotExists();
 
       return tableClient;
     }

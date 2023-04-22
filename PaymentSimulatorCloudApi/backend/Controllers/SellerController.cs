@@ -24,7 +24,7 @@ namespace tech_test_payment_api.Controllers
       _storageAccConnection = configuration.GetValue<string>("ConnectionStrings:StorageAccConnection");
       _tableName = configuration.GetValue<string>("ConnectionStrings:AzureSellerTable");
       //get async in ctor needs to use GetWaiter and then GetResult to return the object from Task<TableClient>
-      _tableClient = ContextHelper.GetAzureTableClientAsync(_tableName, _storageAccConnection).GetAwaiter().GetResult();
+      _tableClient = ContextHelper.GetAzureTableClient(_tableName, _storageAccConnection);
     }
 
     /// <summary>

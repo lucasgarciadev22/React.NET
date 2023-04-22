@@ -23,7 +23,7 @@ namespace tech_test_payment_api.Controllers
       _context = context;
       _storageAccConnection = configuration.GetValue<string>("ConnectionStrings:StorageAccConnection");
       _tableName = configuration.GetValue<string>("ConnectionStrings:AzureOrderTable");
-      _tableClient = ContextHelper.GetAzureTableClientAsync(_tableName, _storageAccConnection).GetAwaiter().GetResult();
+      _tableClient = ContextHelper.GetAzureTableClient(_tableName, _storageAccConnection);
     }
 
     /// <summary>
@@ -77,7 +77,10 @@ namespace tech_test_payment_api.Controllers
           await _context.OrderRegistries.AddAsync(orderRegistry);
           await _context.SaveChangesAsync();
 
-          OrderRegistryLog orderRegistryLog = new OrderRegistryLog(orderRegistry, ActionType.Insert, orderRegistry.OrderNumber, Guid.NewGuid().ToString());
+          OrderRegistryLog orderRegistryLog = new OrderRegistryLog
+          (
+            orderRegistry, ActionType.Insert, orderRegistry.OrderNumber, Guid.NewGuid().ToString()
+          );
           await _tableClient.UpsertEntityAsync(orderRegistryLog);
         }
       }
