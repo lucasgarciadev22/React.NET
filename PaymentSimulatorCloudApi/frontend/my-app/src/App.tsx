@@ -8,11 +8,13 @@ import SellerFormWrapper from "./components/seller-components/SellerFormWrapper"
 import SellerLogsWrapper from './components/seller-components/SellerLogsWrapper';
 import PageNotFound from "./views/PageNotFound";
 import OrderRegistryLogsWrapper from "./components/order-registry-components/OrderRegistryLogsWrapper";
+import LoginView from "./views/LoginView";
 
 
 const App: React.FC = () => {
   return (
     <Routes>
+      <Route path="/login" element={<LoginView/>}/>
       <Route path="/" element={<Dashboard/>}/>
       <Route path="*" element={<PageNotFound/>}/>
       <Route path="/orders/*" element={<OrderRegistryView/>}/>
