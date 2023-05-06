@@ -12,7 +12,7 @@ using tech_test_payment_api.Context;
 namespace tech_test_payment_api.Migrations
 {
     [DbContext(typeof(OrderContext))]
-    [Migration("20230504233041_PaymentAPIMigrations")]
+    [Migration("20230506012421_PaymentAPIMigrations")]
     partial class PaymentAPIMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
